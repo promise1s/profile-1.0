@@ -1885,65 +1885,65 @@
             {
                 company: "美团-大众点评",
                 role: "用户策略运营实习生",
-                period: "2025.12–2026.03",
+                period: "2025.12 – 2026.03",
                 tagColor: "blue",
                 projects: [
                     {
                         tag: "触达策略",
                         title: "用户分层触达模型",
-                        desc: "设计用户分层触达模型，千万级样本AB Test，核心人群Push UVCTR 0.55%→0.9%（+0.35pp）",
+                        desc: "设计分层归类与匹配机制，在千万级用户样本中开展 AB Test 验证，核心人群 Push UVCTR 0.55% → 0.9%（+0.35pp），沉淀为可复用框架。",
                         metric: "+0.35pp CTR",
                     },
                     {
                         tag: "AI Agent",
-                        title: "Push文案生成Agent",
-                        desc: "设计Push文案生成Agent，构建「素材校验—受众确认—场景选择—风险检测」流程",
-                        metric: "流程构建",
+                        title: "Push 文案生成 Agent",
+                        desc: "构建「素材校验—受众确认—场景选择—风险检测」生成流程；通过 AB 实验优化承接结构，延长高决策场景用户停留时长。",
+                        metric: "停留时长↑",
                     },
                 ],
                 skills: ["AB Test", "SQL", "Prompt Engineering"],
             },
             {
-                company: "碳益科技",
-                role: "产品实习生",
-                period: "2025.07–2025.11",
-                tagColor: "orange",
-                projects: [
-                    {
-                        tag: "评分重构",
-                        title: "供应商评分机制重构",
-                        desc: "引入0.5分中间层，300家供应商对照实验，70分以上占比提升20%，审核周期缩短15%",
-                        metric: "周期-15%",
-                    },
-                    {
-                        tag: "功能优化",
-                        title: "核心功能激活率提升",
-                        desc: "拆解核心功能路径，识别阻力节点，推动激活率与完成率提升",
-                        metric: "激活率↑",
-                    },
-                ],
-                skills: ["Axure", "PRD", "竞品分析"],
-            },
-            {
                 company: "蔚来汽车",
                 role: "产品运营实习生",
-                period: "2025.02–2025.06",
+                period: "2025.02 – 2025.06",
                 tagColor: "green",
                 projects: [
                     {
                         tag: "规则优化",
-                        title: "系统规则优化",
-                        desc: "分析千条日志构建异常数据集，识别规则冲突，协同研发修正逻辑",
-                        metric: "逻辑修正",
+                        title: "智能合同系统规则优化",
+                        desc: "分析上千条系统日志构建异常行为数据集，拆解合同审批流程识别规则冲突，输出优化方案并协同研发修正逻辑，提升系统稳定性与合规准确性。",
+                        metric: "稳定性↑",
                     },
                     {
                         tag: "培训落地",
                         title: "2万人系统培训落地",
-                        desc: "推动2万人系统培训，通过率98%，沉淀可复用规范",
-                        metric: "通过率98%",
+                        desc: "推动面向2万人的系统培训与规则说明落地，通过率98%，形成可复用系统使用规范。",
+                        metric: "通过率 98%",
                     },
                 ],
                 skills: ["B端产品", "数据分析", "用户调研"],
+            },
+            {
+                company: "碳益科技",
+                role: "产品实习生",
+                period: "2025.07 – 2025.11",
+                tagColor: "orange",
+                projects: [
+                    {
+                        tag: "细化颗粒",
+                        title: "供应商评分机制重构",
+                        desc: "引入0.5分中间层级解决二元评分区分度不足问题；300家供应商随机对照实验，70分以上占比提升约20%，审核周期缩短15%。",
+                        metric: "审核周期 -15%",
+                    },
+                    {
+                        tag: "功能优化",
+                        title: "核心功能激活率提升",
+                        desc: "拆解核心功能使用路径，识别入口曝光、流程复杂度与价值认知阻力节点，结合渠道行为差异设计AB实验，推动激活率与完成率提升。",
+                        metric: "激活率↑",
+                    },
+                ],
+                skills: ["Axure", "PRD", "竞品分析"],
             },
         ];
 
@@ -2535,11 +2535,4 @@
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
-    </script>
-</body>
-</html>
+ 
