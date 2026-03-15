@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rachel的个人主页</title>
+    <!-- Matter.js for Physics Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- System Fonts -->
+    
+    <style>
+        /* 
+         * 1. GLOBAL COLOR VARIABLES (Strict Adherence)
+         */
+        :root {
+            /* Light Mode (Default) */
+            --color-bg: #FFFFFF;          /* Pure White */
+            --color-accent: #FFCC66;      /* Warm Yellow */
+            --color-primary: #003366;     /* Navy Blue */
+            --color-secondary: #336699;   /* Steel Blue */
+            --color-text-main: #1A2026;   /* Darkest Slate */
+            --color-dot: #E0E0E0;         /* Light Gray */
+            
+            --font-display: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --font-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --color-bg: #050505;          /* Deep Black */
+            --color-accent: #FFD700;      /* Gold */
+            --color-primary: #4DA6FF;     /* Bright Blue */
+            --color-secondary: #336699;   /* Steel Blue */
+            --color-text-main: #E0E0E0;   /* Light Gray */
+            --color-dot: #333333;         /* Dark Gray */
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Disable native scroll */
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-size: 18px; /* Base size up for pixel font readability */
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .reveal-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: revealAnim 0.6s ease-out forwards;
+        }
+        @keyframes revealAnim {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 
+         * 2. CORE LAYOUT & NAVIGATION 
+         */
+        #app-container {
+            width: 100vw;
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1); /* Specific Transition */
+        }
+
+        section {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- NEW TOP NAVIGATION (Google Labs Style) --- */
+        .top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 20; /* Highest priority */
+            pointer-events: auto;
+            font-family: var(--font-display);
+        }
+
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-pill {
+            background: transparent;
+            border: none;
+            color: var(--color-primary);
+            padding: 8px 16px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-pill::after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-pill:hover::after {
+            width: 100%;
+        }
+        
+        .nav-pill:active {
+            opacity: 0.7;
+        }
+
+        .subscribe-btn {
+            background: transparent;
+            color: var(--color-text-main);
+            border: 1px solid var(--color-text-main);
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .subscribe-btn:hover {
+            background: var(--color-text-main);
+            color: var(--color-bg);
+        }
+
+        /* Mobile Nav Adjustment */
+        @media (max-width: 768px) {
+            .top-nav { padding: 0 15px; height: 60px; }
+            .nav-brand span { display: none; } /* Hide text keep icon if any */
+            .nav-menu { gap: 8px; }
+            .nav-pill { padding: 8px 12px; font-size: 0.8rem; }
+        }
+
+        /* Right Dot Navigation */
+        .global-dots {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 0; /* Square dots for pixel feel */
+            border: 1px solid var(--color-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+            box-shadow: 2px 2px 0 var(--color-primary);
+        }
+        .nav-dot.active {
+            background-color: var(--color-primary);
+            transform: scale(1.2);
+        }
+
+        /* --- SECTION 1: PHYSICS HERO --- */
+        #hero-section {
+            background-color: var(--color-bg);
+        }
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind everything */
+        }
+        .hero-overlay {
+            position: relative;
+            z-index: 10; /* Above Canvas */
+            text-align: center;
+            pointer-events: none; /* Let clicks pass to physics */
+            padding: 40px;
+            /* text-shadow: 4px 4px 0 #FFF; Removed thick shadow for cleaner look with thin lines */
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            white-space: nowrap;
+            -webkit-text-stroke: 2px #FFFFFF;
+        }
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: 1.2rem; 
+            color: var(--color-primary);
+            background: #FFFFFF;
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid var(--color-primary);
+            border-radius: 30px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            font-weight: 600;
+            animation: pulseText 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 0.9rem; }
+        }
+
+        /* --- SECTION 2: INTERNSHIP EXPERIENCE --- */
+        #internship-section {
+            background-color: var(--color-bg);
+            background-image: radial-gradient(var(--color-dot) 2px, transparent 2px);
+            background-size: 24px 24px;
+            padding: 20px 40px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .internship-header {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .internship-subtitle {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-secondary);
+            margin: 0 0 8px;
+            font-family: var(--font-display);
+        }
+        .internship-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            letter-spacing: -0.02em;
+            font-family: var(--font-display);
+        }
+        .internship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .intern-card {
+            background: #FFFFFF;
+            border: 1px solid var(--color-dot);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .intern-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .intern-card-top {
+            background: var(--color-bg);
+            height: 160px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--color-dot);
+            padding: 16px;
+        }
+        .intern-card-tag {
+            background: rgba(0,0,0,0.05);
+            color: var(--color-text-main);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+        .intern-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 0 16px;
+        }
+        .intern-project-pill {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.03em;
+            font-family: var(--font-display);
+        }
+        .intern-card-company-preview {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 4px;
+            font-family: var(--font-display);
+        }
+        .intern-card-bottom {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+        .intern-company {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            font-family: var(--font-display);
+        }
+        .intern-role {
+            font-size: 14px;
+            color: var(--color-text-main);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .intern-projects {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 0;
+            overflow-y: auto;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+            opacity: 0;
+        }
+        .intern-card.expanded .intern-projects {
+            max-height: 30vh;
+            margin-top: 8px;
+            opacity: 1;
+        }
+        .intern-project {
+            background: var(--color-bg);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--color-dot);
+        }
+        .intern-project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .intern-project-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+        .intern-project-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.05);
+            color: var(--color-text-main);
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .intern-project-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .intern-project-metric {
+            font-size: 12px;
+            color: var(--color-secondary);
+            font-weight: 700;
+        }
+        .intern-project-desc {
+            font-size: 12px;
+            color: var(--color-text-main);
+            margin: 0;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+        .intern-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+        .intern-skill {
+            font-size: 12px;
+            color: var(--color-text-main);
+            border: 1px solid var(--color-dot);
+            border-radius: 4px;
+            padding: 4px 10px;
+            background: #FFFFFF;
+        }
+        .intern-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .intern-btn {
+            flex: 1;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: var(--font-display);
+        }
+        .intern-btn-outline {
+            background: #FFFFFF;
+            border: 1px solid var(--color-dot);
+            color: var(--color-text-main);
+        }
+        .intern-btn-outline:hover {
+            background: var(--color-bg);
+        }
+        .intern-btn-filled {
+            background: rgba(43, 43, 43, 0.05);
+            color: var(--color-primary);
+        }
+        .intern-btn-filled:hover {
+            background: rgba(43, 43, 43, 0.1);
+        }
+
+        /* --- SECTION 3: PORTFOLIO --- */
+        #portfolio-section {
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-dot);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 40px 20px 40px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .portfolio-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .portfolio-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .portfolio-subtitle {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin: 0 0 8px;
+            font-family: var(--font-display);
+        }
+
+        .portfolio-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            letter-spacing: -0.02em;
+            font-family: var(--font-display);
+        }
+
+        .egg-btn-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .egg-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .egg-btn:hover {
+            transform: rotate(20deg) scale(1.1);
+        }
+
+        .egg-tooltip {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #555;
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: none;
+            font-family: var(--font-body);
+        }
+
+        .egg-tooltip.show {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            #portfolio-section {
+                padding: 40px 20px;
+            }
+        }
+
+        .portfolio-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .portfolio-card:hover {
+            box-shadow: 0 8px 30px rgba(0,51,102,0.1);
+            transform: translateY(-3px);
+        }
+
+        .portfolio-preview {
+            height: 160px;
+            background: #f7f8fc;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portfolio-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+        }
+
+        .portfolio-content {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .portfolio-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0 0 3px;
+            font-family: var(--font-display);
+        }
+
+        .portfolio-card-subtitle {
+            font-size: 11px;
+            color: #aaa;
+            margin: 0;
+            letter-spacing: 0.05em;
+            font-family: var(--font-display);
+        }
+
+        .portfolio-desc {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.7;
+            margin: 0;
+            font-family: var(--font-body);
+        }
+
+        .portfolio-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .portfolio-highlight-item {
+            display: flex;
+            gap: 7px;
+            align-items: flex-start;
+        }
+
+        .portfolio-highlight-bullet {
+            font-size: 11px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .portfolio-highlight-text {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+            font-family: var(--font-body);
+        }
+
+        .portfolio-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: auto;
+        }
+
+        .portfolio-skill-tag {
+            font-size: 10px;
+            color: #888;
+            border: 1px solid #e8e8e8;
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-family: var(--font-body);
+        }
+
+        .portfolio-links {
+            display: flex;
+            gap: 8px;
+            padding-top: 4px;
+        }
+
+        .portfolio-link {
+            flex: 1;
+            text-align: center;
+            padding: 7px 0;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .portfolio-link:hover {
+            opacity: 0.75;
+        }
+
+        .portfolio-link.disabled {
+            background: #f5f5f5;
+            color: #bbb;
+            border: 1px solid #eee;
+            cursor: not-allowed;
+        }
+
+        .portfolio-link.outline {
+            background: #fff;
+            color: #555;
+            border: 1px solid #e0e0e0;
+        }
+
+        .portfolio-note {
+            text-align: center;
+            font-size: 12px;
+            color: #bbb;
+            margin-top: 24px;
+            font-family: var(--font-body);
+        }
+
+        /* --- SECTION 3.5: AI AGENT GACHA MACHINE --- */
+        #gacha-section {
+            display: none; /* Hidden by default, shown via easter egg */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            background: var(--color-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            overflow-y: auto;
+        }
+
+        /* Initial state for JS toggle */
+        #gacha-section.hidden {
+            display: none !important;
+        }
+
+        .gacha-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .gacha-layout {
+            display: flex;
+            gap: 60px;
+            align-items: stretch;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            flex-wrap: wrap;
+        }
+
+        .gacha-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 300px;
+        }
+
+        .gacha-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .gacha-machine-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gacha-machine {
+            width: 100%;
+            max-width: 480px;
+            background: var(--color-primary);
+            border-radius: 48px;
+            padding: 48px 40px 36px;
+            box-shadow: 10px 10px 0 var(--color-secondary);
+            position: relative;
+        }
+
+        .machine-dome {
+            background: #E8F4F8;
+            border-radius: 50%;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            height: auto;
+            margin: 0 auto 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: glowPulse 3s infinite;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .machine-dome::after {
+            content: "";
+            display: none;
+        }
+        
+        .dome-pokeball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .knob-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        
+        .knob {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            background: var(--color-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .knob-inner {
+            width: 76px;
+            height: 24px;
+            background: var(--color-accent);
+            border-radius: 12px;
+            transition: opacity 0.3s;
+        }
+        .knob.spinning {
+            animation: rotateKnob 0.6s linear;
+            pointer-events: none;
+        }
+        .knob.spinning .knob-inner {
+            opacity: 0.5;
+        }
+
+        .dispenser-slot {
+            background: #111827;
+            border-radius: 20px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .gacha-status {
+            color: var(--color-secondary);
+            font-size: 18px;
+            margin-top: 20px;
+            font-family: var(--font-body);
+            font-weight: 600;
+        }
+
+        .archive-bin {
+            width: 100%;
+            border: 3px dashed var(--color-secondary);
+            border-radius: 20px;
+            padding: 24px;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255,255,255,0.05);
+        }
+        .archive-title {
+            color: var(--color-secondary);
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .archive-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+        .archive-empty {
+            color: var(--color-secondary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            opacity: 0.6;
+            margin: auto;
+        }
+        .archive-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            background: var(--color-bg);
+            border: 2px solid var(--color-primary);
+            box-shadow: 2px 2px 0 var(--color-secondary);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .archive-item:hover {
+            transform: scale(1.1);
+        }
+
+
+
+        /* Pokeball Animations */
+        @keyframes pokeSpin {
+          0%   { transform: rotate(0deg) scale(0.5); opacity: 0; }
+          60%  { transform: rotate(380deg) scale(1.15); opacity: 1; }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+          0%,100% { transform: translateY(0); }
+          40%     { transform: translateY(-18px); }
+          70%     { transform: translateY(-8px); }
+        }
+        @keyframes glowPulse {
+          0%,100% { filter: drop-shadow(0 0 6px #7dd3fc); }
+          50%     { filter: drop-shadow(0 0 18px #38bdf8); }
+        }
+        @keyframes rotateKnob { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        /* Pokeball Modal */
+        .pokeball-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,15,40,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .pokeball-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .pokeball-container {
+            text-align: center;
+            position: relative;
+        }
+        .pokeball-halves {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 24px;
+            transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+        }
+        .pokeball-modal.opened .pokeball-halves {
+            transform: scale(0.5) translateY(-120px);
+            margin-bottom: -60px;
+        }
+        .pokeball-top {
+            position: absolute;
+            top: 0; left: 0; width: 180px; height: 90px;
+            overflow: hidden;
+            transform-origin: center bottom;
+            transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+        }
+        .pokeball-modal.opened .pokeball-top {
+            transform: translateY(-60px) rotate(-15deg);
+        }
+        .pokeball-bottom {
+            position: absolute;
+            bottom: 0; left: 0; width: 180px; height: 90px;
+            overflow: hidden;
+        }
+        .pokeball-band {
+            position: absolute;
+            top: 79px; left: 0; right: 0; height: 22px;
+            background: #333;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pokeball-btn-outer {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: #555;
+            border: 3px solid #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pokeball-btn-inner {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: white;
+        }
+        .pokeball-open-btn {
+            position: absolute;
+            bottom: -50px; left: 50%;
+            transform: translateX(-50%);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 24px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: var(--font-display);
+            transition: opacity 0.3s;
+        }
+        .pokeball-modal.opened .pokeball-open-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .pokeball-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 48px;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeUp 0.4s ease-out;
+            display: none;
+            text-align: center;
+            transform-origin: top center;
+        }
+        .pokeball-modal.opened .pokeball-content {
+            display: block;
+        }
+        .pokeball-emoji { font-size: 56px; }
+        .pokeball-title { font-weight: bold; font-size: 20px; margin-top: 8px; font-family: var(--font-display); }
+        .pokeball-rarity {
+            display: inline-block;
+            font-size: 11px; padding: 2px 10px;
+            border-radius: 20px; margin: 6px 0 12px;
+            font-family: var(--font-body);
+        }
+        .pokeball-desc { color: #444; font-size: 15px; margin: 0 0 16px; font-family: var(--font-body); }
+        .pokeball-code {
+            background: #f5f5f5; border-radius: 8px; padding: 12px;
+            font-size: 13px; text-align: left; overflow-x: auto;
+            font-family: monospace; color: #333;
+        }
+        .pokeball-close {
+            position: fixed; top: 24px; right: 32px;
+            background: none; border: none; color: white;
+            font-size: 28px; cursor: pointer;
+        }
+
+        /* --- SECTION 4: SKILLS --- */
+        #skills-section {
+            background-color: var(--color-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        .skills-inner {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        .skills-header { text-align: center; }
+        .skills-sup {
+            font-size: 11px;
+            letter-spacing: 0.4em;
+            color: var(--color-secondary);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .skills-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            letter-spacing: 0.1em;
+        }
+        .skills-divider {
+            width: 60px;
+            height: 3px;
+            background: var(--color-primary);
+            margin: 12px auto 0;
+        }
+        .skills-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .skills-card-area { display: flex; justify-content: center; }
+        .tarot-flipper { width: 240px; height: 360px; perspective: 900px; }
+        .tarot-flip-inner {
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tarot-flip-inner.flipped { transform: rotateY(180deg); }
+        .tarot-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background: var(--color-bg);
+            border: 2px solid var(--color-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 18px;
+            box-sizing: border-box;
+        }
+        .tarot-back { transform: rotateY(180deg); }
+        .tarot-face-bar { position: absolute; left: 0; right: 0; height: 6px; background: var(--color-primary); }
+        .tarot-face-bar.top { top: 0; }
+        .tarot-face-bar.bottom { bottom: 0; }
+        .tarot-corner { position: absolute; width: 14px; height: 14px; }
+        .tarot-corner.tl { top: 10px; left: 10px; border-top: 2px solid var(--color-primary); border-left: 2px solid var(--color-primary); }
+        .tarot-corner.tr { top: 10px; right: 10px; border-top: 2px solid var(--color-primary); border-right: 2px solid var(--color-primary); }
+        .tarot-corner.bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--color-primary); border-left: 2px solid var(--color-primary); }
+        .tarot-corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--color-primary); border-right: 2px solid var(--color-primary); }
+        .tarot-front-pattern { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .tarot-front-title { font-family: var(--font-display); font-size: 10px; letter-spacing: 0.25em; color: var(--color-secondary); text-transform: uppercase; }
+        .tarot-front-ornament { font-size: 48px; color: var(--color-primary); opacity: 0.15; }
+        .tarot-front-subtitle { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--color-primary); letter-spacing: 0.05em; }
+        .tarot-arcana-label { font-family: var(--font-display); font-size: 10px; letter-spacing: 0.2em; color: var(--color-secondary); text-transform: uppercase; }
+        .tarot-icon-circle {
+            width: 68px; height: 68px; border-radius: 50%;
+            background: var(--color-bg);
+            border: 2px solid var(--color-primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+            box-shadow: 3px 3px 0 var(--color-dot);
+        }
+        .tarot-hr { width: calc(100% - 32px); height: 1px; background: var(--color-dot); }
+        .tarot-skill-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--color-primary); letter-spacing: 0.05em; text-align: center; }
+        .tarot-skill-sub { font-size: 0.8rem; color: var(--color-secondary); font-weight: 500; font-family: var(--font-body); }
+        .tarot-skill-desc { font-size: 0.82rem; line-height: 1.6; color: var(--color-text-main); text-align: center; font-family: var(--font-body); padding: 0 4px; }
+        .skills-list { display: flex; flex-direction: column; gap: 4px; }
+        .skill-list-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 9px 14px; border-radius: 8px; cursor: pointer;
+            border: 1px solid transparent;
+            transition: background 0.15s, border-color 0.15s;
+            font-family: var(--font-body);
+        }
+        .skill-list-item:hover, .skill-list-item.active {
+            background: rgba(0, 51, 102, 0.05);
+            border-color: var(--color-dot);
+        }
+        .skill-list-num { font-size: 10px; color: var(--color-secondary); width: 18px; flex-shrink: 0; font-family: var(--font-display); letter-spacing: 0.05em; }
+        .skill-list-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+        .skill-list-name { font-size: 14px; color: var(--color-text-main); font-weight: 600; flex: 1; }
+        .skill-list-sub { font-size: 11px; color: var(--color-secondary); }
+        .tarot-card { display: none; }
+        .tarot-dot { display: none; }
+
+                /* Global Toast */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--color-text-main); color: var(--color-bg);
+            padding: 15px 30px; border: 1px solid var(--color-primary);
+            font-family: var(--font-display); font-size: 0.8rem;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+            z-index: 3000;
+        }
+
+        /* Theme Toggle Animation */
+        .theme-toggle-btn {
+            position: relative;
+            width: 44px;
+            height: 38px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .theme-toggle-btn span {
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s ease;
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle-btn .icon-sun {
+            transform: translateY(30px) rotate(90deg);
+            opacity: 0;
+        }
+
+        .theme-toggle-btn .icon-moon {
+            transform: translateY(0) rotate(0);
+            opacity: 1;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn .icon-sun {
+            transform: translateY(0) rotate(0);
+            opacity: 1;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn .icon-moon {
+            transform: translateY(-30px) rotate(-90deg);
+            opacity: 0;
+        }
+
+        /* Confetti Animation */
+        .confetti-piece {
+            position: fixed;
+            top: -20px;
+            width: 12px;
+            height: 24px;
+            z-index: 9999;
+            animation: confettiFall linear forwards;
+            pointer-events: none;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Container -->
+    <div id="app-container">
+
+        <!-- SECTION 1: PHYSICS HERO -->
+        <section id="hero-section">
+            <!-- Top Navigation (Google Labs Style) -->
+            <nav class="top-nav">
+                <div class="nav-brand">
+                    <span>⚗️</span> RACHEL Portfolio
+                </div>
+                <div class="nav-menu">
+                    <button class="nav-pill" onclick="scrollToSection(0)">首页</button>
+                    <button class="nav-pill" onclick="scrollToSection(1)">实习经历</button>
+                    <button class="nav-pill" onclick="scrollToSection(2)">Portfolio</button>
+                    <button class="nav-pill" onclick="scrollToSection(3)">专业技能</button>
+                    <button class="nav-pill theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
+                        <span class="icon-sun">☀️</span>
+                        <span class="icon-moon">🌙</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="hero-overlay">
+                <h1 class="hero-title">Rachel Angelica</h1>
+                <div class="hero-subtitle">立志成为产品经理的实习生</div>
+            </div>
+            <canvas id="hero-canvas"></canvas>
+        </section>
+
+        <!-- SECTION 2: INTERNSHIP EXPERIENCE -->
+        <section id="internship-section">
+            <div class="internship-header">
+                <p class="internship-subtitle">Work Experience</p>
+                <h2 class="internship-title">实习经历</h2>
+            </div>
+            <div class="internship-grid" id="internship-grid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: PORTFOLIO -->
+        <section id="portfolio-section">
+            <div class="portfolio-container">
+                <div class="portfolio-header">
+                    <div>
+                        <p class="portfolio-subtitle">My Work</p>
+                        <h2 class="portfolio-title">Portfolio</h2>
+                    </div>
+                    <!-- Easter Egg Button -->
+                    <div class="egg-btn-wrapper">
+                        <button class="egg-btn" id="egg-btn" title="彩蛋">🎰</button>
+                        <div class="egg-tooltip" id="egg-tooltip">
+                            🎉 你发现了彩蛋！扭蛋机正在赶来~
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-grid" id="portfolio-grid">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+
+                <p class="portfolio-note">Push 生成器 Demo 部署后将自动更新链接</p>
+            </div>
+        </section>
+
+
+
+        <!-- SECTION 4: SKILLS -->
+        <section id="skills-section">
+            <div class="skills-inner">
+                <div class="skills-header">
+                    <div class="skills-sup">The Major Arcana</div>
+                    <h2 class="skills-title">语言与技能</h2>
+                    <div class="skills-divider"></div>
+                </div>
+                <div class="skills-layout">
+                    <div class="skills-card-area">
+                        <div class="tarot-flipper" id="tarot-flipper">
+                            <div class="tarot-flip-inner" id="tarot-flip-inner">
+                                <div class="tarot-face tarot-front">
+                                    <div class="tarot-face-bar top"></div>
+                                    <div class="tarot-corner tl"></div>
+                                    <div class="tarot-corner tr"></div>
+                                    <div class="tarot-corner bl"></div>
+                                    <div class="tarot-corner br"></div>
+                                    <div class="tarot-front-pattern">
+                                        <div class="tarot-front-title">THE MAJOR ARCANA</div>
+                                        <div class="tarot-front-ornament">✦</div>
+                                        <div class="tarot-front-subtitle">语言与技能</div>
+                                    </div>
+                                    <div class="tarot-face-bar bottom"></div>
+                                </div>
+                                <div class="tarot-face tarot-back" id="tarot-back-face">
+                                    <div class="tarot-face-bar top"></div>
+                                    <div class="tarot-corner tl"></div>
+                                    <div class="tarot-corner tr"></div>
+                                    <div class="tarot-corner bl"></div>
+                                    <div class="tarot-corner br"></div>
+                                    <div class="tarot-arcana-label" id="tf-arcana">ARCANA I</div>
+                                    <div class="tarot-icon-circle" id="tf-icon">⚖️</div>
+                                    <div class="tarot-hr"></div>
+                                    <div class="tarot-skill-name" id="tf-name">法律研究</div>
+                                    <div class="tarot-skill-sub" id="tf-sub">The Scholar</div>
+                                    <div class="tarot-hr"></div>
+                                    <div class="tarot-skill-desc" id="tf-desc">熟练检索 CNKI、北大法宝、Westlaw，擅长比较法与监管文本分析</div>
+                                    <div class="tarot-face-bar bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list" id="skills-list"></div>
+                </div>
+            </div>
+            <div id="tarot-stage" style="display:none;"></div>
+            <div id="tarot-dots" style="display:none;"></div>
+            <div id="tarot-counter" style="display:none;"></div>
+            <button id="tarot-prev" style="display:none;"></button>
+            <button id="tarot-next" style="display:none;"></button>
+        </section>
+
+        <!-- SECTION 5: SUMMARY & HUGE TEXT -->
+        <section id="summary-section" style="background-color: var(--color-bg); flex-direction: column; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--color-dot); height: 100vh; overflow-y: auto; overflow-x: hidden;">
+            <div class="summary-container" style="display: flex; width: 90%; max-width: 1200px; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 40px;">
+                <div class="summary-left" style="flex: 1; min-width: 300px;">
+                    <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">目前开放PM实习机会 · 欢迎内推或coffee chat</h2>
+                    <a href="/cdn-cgi/l/email-protection#f78f9e9698858296999999b7c6c5c1d994989a" class="subscribe-btn" style="text-decoration: none; display: inline-block;"><span class="__cf_email__" data-cfemail="2b53424a44595e4a4545456b1a191d05484446">[email&#160;protected]</span></a>
+                </div>
+                <div class="summary-right" style="display: flex; gap: 60px; flex-wrap: wrap;">
+                    <div class="summary-col">
+                        <h4 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--color-text-main); font-weight: 600;">Site Navigation</h4>
+                        <ul style="list-style: none; line-height: 2; color: var(--color-secondary); font-size: 1.1rem;">
+                            <li style="cursor: pointer;" onclick="scrollToSection(0)">Home</li>
+                            <li style="cursor: pointer;" onclick="scrollToSection(1)">Internships</li>
+                            <li style="cursor: pointer;" onclick="scrollToSection(2)">Portfolio</li>
+                            <li style="cursor: pointer;" onclick="scrollToSection(3)">Skills</li>
+                        </ul>
+                    </div>
+                    <div class="summary-col">
+                        <h4 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--color-text-main); font-weight: 600;">Other Links</h4>
+                        <ul style="list-style: none; line-height: 2; color: var(--color-secondary); font-size: 1.1rem;">
+                            <li style="cursor: pointer;">About Me</li>
+                            <li style="cursor: pointer;">Projects</li>
+                            <li style="cursor: pointer;">Blog</li>
+                            <li style="cursor: pointer;">Contact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="huge-text-container" style="width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 2vh; margin-top: auto;">
+                <h1 style="font-size: min(11vw, 15vh); font-weight: 800; letter-spacing: -0.05em; color: var(--color-primary); margin: 0; line-height: 0.85; white-space: nowrap; max-width: 100%; -webkit-text-stroke: 2px #FFFFFF;">Product Manager</h1>
+            </div>
+            
+            <div class="footer-bottom" style="width: 100%; display: flex; justify-content: space-between; padding: 20px 40px; border-top: 1px solid var(--color-dot); font-size: 0.8rem; color: var(--color-secondary); font-weight: 500; text-transform: uppercase;">
+                <div>© 2026 Rachel Angelica</div>
+                <div style="display: flex; gap: 20px;">
+                    <span style="cursor: pointer;">About</span>
+                    <span style="cursor: pointer;">Privacy</span>
+                    <span style="cursor: pointer;">Terms</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- SECTION 3.5: AI AGENT GACHA -->
+    <section id="gacha-section" class="hidden">
+        <button class="gacha-close-btn" id="gacha-close-btn">&times;</button>
+        <div class="gacha-layout">
+            <div class="gacha-left">
+                <div class="gacha-machine-wrapper">
+                    <div class="gacha-machine">
+                        <div class="machine-dome">
+                            <!-- 1 purple, 2 yellow, 2 red -->
+                            <div class="dome-pokeball" style="top: 60%; left: 30%; transform: rotate(15deg);">
+                                <svg viewBox="0 0 100 100" width="20" height="20">
+                                    <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="#9333ea" stroke="#1e293b" stroke-width="4"/>
+                                    <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                                    <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+                                </svg>
+                            </div>
+                            <div class="dome-pokeball" style="top: 70%; left: 50%; transform: rotate(-20deg);">
+                                <svg viewBox="0 0 100 100" width="20" height="20">
+                                    <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="#eab308" stroke="#1e293b" stroke-width="4"/>
+                                    <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                                    <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+                                </svg>
+                            </div>
+                            <div class="dome-pokeball" style="top: 55%; left: 65%; transform: rotate(45deg);">
+                                <svg viewBox="0 0 100 100" width="20" height="20">
+                                    <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="#eab308" stroke="#1e293b" stroke-width="4"/>
+                                    <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                                    <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+                                </svg>
+                            </div>
+                            <div class="dome-pokeball" style="top: 75%; left: 70%; transform: rotate(-10deg);">
+                                <svg viewBox="0 0 100 100" width="20" height="20">
+                                    <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="#ef4444" stroke="#1e293b" stroke-width="4"/>
+                                    <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                                    <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+                                </svg>
+                            </div>
+                            <div class="dome-pokeball" style="top: 80%; left: 40%; transform: rotate(30deg);">
+                                <svg viewBox="0 0 100 100" width="20" height="20">
+                                    <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="#ef4444" stroke="#1e293b" stroke-width="4"/>
+                                    <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                                    <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="knob-container">
+                            <div class="knob" id="gacha-knob">
+                                <div class="knob-inner"></div>
+                            </div>
+                        </div>
+                        <div class="dispenser-slot" id="dispenser-slot"></div>
+                    </div>
+                    <div class="gacha-status" id="gacha-status">点击按钮抽取作品</div>
+                </div>
+            </div>
+            
+            <div class="gacha-right">
+                <div class="archive-bin" id="archive-bin">
+                    <div class="archive-title">已收集的作品</div>
+                    <div class="archive-content" id="archive-content">
+                        <div class="archive-empty">暂无收集</div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </section>
+
+    <!-- GLOBAL NAV DOTS (Right Side Indicator) -->
+    <div class="global-dots">
+        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" onclick="scrollToSection(2)"></div>
+        <div class="nav-dot" onclick="scrollToSection(3)"></div>
+        <div class="nav-dot" onclick="scrollToSection(4)"></div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="pokeball-modal" id="pokeball-modal">
+        <button class="pokeball-close" id="pokeball-close">&times;</button>
+        <div class="pokeball-container">
+            <div class="pokeball-halves">
+                <div class="pokeball-bottom" id="pb-bottom">
+                    <svg viewBox="0 0 100 50" width="180" height="90">
+                        <path d="M0,0 A50,50 0 0,0 100,0 Z" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                    </svg>
+                </div>
+                <div class="pokeball-top" id="pb-top">
+                    <svg viewBox="0 0 100 50" width="180" height="90">
+                        <path d="M0,50 A50,50 0 0,1 100,50 Z" fill="#ef4444" stroke="#1e293b" stroke-width="4" id="pb-top-path"/>
+                    </svg>
+                </div>
+                <div class="pokeball-band">
+                    <div class="pokeball-btn-outer">
+                        <div class="pokeball-btn-inner"></div>
+                    </div>
+                </div>
+                <button class="pokeball-open-btn" id="pokeball-open-btn" style="background: #ef4444;">打开</button>
+            </div>
+            
+            <div class="pokeball-content" id="pokeball-content">
+                <div class="pokeball-emoji" id="pb-emoji">🤖</div>
+                <div class="pokeball-title" id="pb-title">作品名称</div>
+                <div class="pokeball-rarity" id="pb-rarity" style="background: #fee2e2; color: #991b1b;">普通</div>
+                <p class="pokeball-desc" id="pb-desc">描述信息</p>
+                <div class="pokeball-code" id="pb-code">console.log("hello");</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">邮箱地址已复制到剪贴板！</div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // --- 0. STATE MANAGEMENT ---
+        const state = {
+            currentSection: 0,
+            isScrolling: false,
+            totalSections: 5,
+            isDark: false
+        };
+        const appContainer = document.getElementById('app-container');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            state.isDark = !state.isDark;
+            document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
+            updatePhysicsColors();
+        }
+
+        function updatePhysicsColors() {
+            if (!window.physicsShapes) return;
+            
+            const isDark = state.isDark;
+            // Define palettes
+            const lightColors = ['#FFCC66', '#003366', '#336699', '#E0E0E0', '#1A2026'];
+            const darkColors = ['#FFD700', '#4DA6FF', '#336699', '#333333', '#E0E0E0'];
+            
+            // Update shapes
+            window.physicsShapes.forEach((body, index) => {
+                // Determine original color index (approximate mapping)
+                // This is a simplification; ideally we store the color index on the body
+                const colorIndex = index % lightColors.length; 
+                const newColor = isDark ? darkColors[colorIndex] : lightColors[colorIndex];
+                
+                if (body.render) {
+                    body.render.fillStyle = newColor;
+                    // Update text color for pills
+                    if (body.plugin && body.plugin.text) {
+                        body.plugin.textColor = isDark ? '#050505' : '#003366';
+                        // Pills alternate colors
+                        if (index < 3) { // First 3 are pills
+                             body.render.fillStyle = (index % 2 === 0) ? (isDark ? '#FFD700' : '#FFCC66') : (isDark ? '#333333' : '#E0E0E0');
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- 1. SCROLL LOGIC (Vanilla JS) ---
+        function scrollToSection(index) {
+            if (index < 0 || index >= state.totalSections) return;
+            state.currentSection = index;
+            appContainer.style.transform = `translateY(-${index * 100}vh)`;
+            
+            // Update Nav
+            navDots.forEach((d, i) => d.classList.toggle('active', i === index));
+
+            // State Reset Triggers
+            stopGachaAnimations();
+            if(index === 3) triggerSkills();
+        }
+
+        // Nested Scroll Helper
+        function handleScrollable(element, deltaY) {
+            if (!element || element === document.body || element === document.documentElement) return false;
+            if (element.nodeType !== 1) return handleScrollable(element.parentElement, deltaY);
+            const style = window.getComputedStyle(element);
+            const overflowY = style.getPropertyValue('overflow-y');
+            const isScrollableY = overflowY === 'auto' || overflowY === 'scroll';
+            
+            if (isScrollableY && element.scrollHeight > element.clientHeight) {
+                const isAtTop = element.scrollTop <= 0;
+                const isAtBottom = Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <= 1;
+                
+                if (deltaY < 0 && !isAtTop) return true; // Scrolling up inside container
+                if (deltaY > 0 && !isAtBottom) return true; // Scrolling down inside container
+            }
+            return handleScrollable(element.parentElement, deltaY);
+        }
+
+        // Wheel Event
+        let wheelTimeout;
+        window.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) < 15) return; // Ignore tiny trackpad movements
+            
+            if (handleScrollable(e.target, e.deltaY)) return; // Let container scroll
+            
+            if (!state.isScrolling) {
+                state.isScrolling = true;
+                if (e.deltaY > 0) scrollToSection(state.currentSection + 1);
+                else scrollToSection(state.currentSection - 1);
+            }
+            
+            // Reset the scrolling state only after the user stops scrolling for 600ms
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => { 
+                state.isScrolling = false; 
+            }, 600);
+        }, { passive: false });
+
+        // Touch Events
+        let touchStartY = 0;
+        window.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY, { passive: true });
+        window.addEventListener('touchend', e => {
+            if (state.isScrolling) return;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - touchEndY; // Positive if swiping up (scrolling down)
+            
+            if (Math.abs(deltaY) > 50) {
+                if (handleScrollable(e.target, deltaY)) return; // Let container scroll
+                
+                state.isScrolling = true;
+                if (deltaY > 0) scrollToSection(state.currentSection + 1);
+                else scrollToSection(state.currentSection - 1);
+                
+                setTimeout(() => { state.isScrolling = false; }, 600);
+            }
+        });
+
+
+        // --- 2. PHYSICS HERO (Matter.js - Updated for Pixel Art Style) ---
+        function initPhysics() {
+            const Engine = Matter.Engine,
+                  Render = Matter.Render,
+                  Runner = Matter.Runner,
+                  World = Matter.World,
+                  Bodies = Matter.Bodies,
+                  Mouse = Matter.Mouse,
+                  MouseConstraint = Matter.MouseConstraint,
+                  Events = Matter.Events,
+                  Common = Matter.Common;
+
+            const engine = Engine.create();
+            window.physicsEngine = engine; // Expose for theme toggle
+            const render = Render.create({
+                element: document.getElementById('hero-section'),
+                canvas: document.getElementById('hero-canvas'),
+                engine: engine,
+                options: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    background: 'transparent',
+                    wireframes: false,
+                    pixelRatio: window.devicePixelRatio
+                }
+            });
+
+            // Boundaries
+            const wallOptions = { isStatic: true, render: { visible: false } };
+            const walls = [
+                Bodies.rectangle(window.innerWidth/2, window.innerHeight+60, window.innerWidth, 120, wallOptions),
+                Bodies.rectangle(-60, window.innerHeight/2, 120, window.innerHeight*2, wallOptions),
+                Bodies.rectangle(window.innerWidth+60, window.innerHeight/2, 120, window.innerHeight*2, wallOptions)
+            ];
+            World.add(engine.world, walls);
+
+            // Shape Generators
+            // Colors: Navy, Yellow, Steel Blue, Gray, Black (High Contrast)
+            const colors = ['#FFCC66', '#003366', '#336699', '#E0E0E0', '#1A2026'];
+            const labels = ["产品思维", "用户画像"]; 
+            const shapes = [];
+            window.physicsShapes = shapes; // Expose for theme toggle
+            
+            // 1. Text Pills (Labels) - Rounded as requested
+            // Removed Stroke, kept Chamfer
+            for(let i = 0; i < 3; i++) {
+                const label = labels[i % labels.length];
+                const width = 260 + label.length * 15; 
+                const height = 60;
+                const x = window.innerWidth / 2 + (Math.random() - 0.5) * 300;
+                const y = -Math.random() * 500 - 100;
+
+                const pill = Bodies.rectangle(x, y, width, height, {
+                    chamfer: { radius: 30 }, 
+                    render: { 
+                        fillStyle: i % 2 === 0 ? '#FFCC66' : '#E0E0E0', 
+                        strokeStyle: 'transparent', // NO STROKE
+                    },
+                    restitution: 0.5,
+                    friction: 0.1,
+                    plugin: { 
+                        text: label,
+                        textColor: '#003366'
+                    }
+                });
+                shapes.push(pill);
+            }
+
+            // 2. Large Geometric Shapes - Sharp Corners (except Circle)
+            // Added Triangle
+            for(let i = 0; i < 5; i++) {
+                const x = Math.random() * (window.innerWidth - 200) + 100;
+                const y = -Math.random() * 1000 - 500;
+                const size = 120 + Math.random() * 100; 
+                const color = colors[i % colors.length];
+
+                let body;
+                const type = Math.random();
+
+                if(type > 0.75) {
+                    // Triangle (Sharp, 3 sides)
+                    // Matter.js polygon: sides=3
+                    body = Bodies.polygon(x, y, 3, size, {
+                        render: { fillStyle: color, strokeStyle: 'transparent' },
+                        restitution: 0.6
+                    });
+                } else if (type > 0.5) {
+                    // Box/Square (Sharp, No Chamfer)
+                    body = Bodies.rectangle(x, y, size, size, {
+                        render: { fillStyle: color, strokeStyle: 'transparent' },
+                        restitution: 0.6
+                    });
+                } else if (type > 0.25) {
+                    // Circle (Round)
+                    body = Bodies.circle(x, y, size/1.8, {
+                        render: { fillStyle: color, strokeStyle: 'transparent' },
+                        restitution: 0.7
+                    });
+                } else {
+                    // Hexagon/Pentagon (Sharp)
+                    body = Bodies.polygon(x, y, Math.floor(Math.random()*2)+5, size/1.6, {
+                        render: { fillStyle: color, strokeStyle: 'transparent' },
+                        restitution: 0.5
+                    });
+                }
+                shapes.push(body);
+            }
+            World.add(engine.world, shapes);
+
+            // Custom Renderer for Text on Pills using Pixel Font
+            Events.on(render, 'afterRender', function() {
+                const context = render.context;
+                // Use SF Pro Text for the physics labels
+                context.font = "700 20px 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif";
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+
+                shapes.forEach(body => {
+                    if (body.plugin && body.plugin.text) {
+                        const { x, y } = body.position;
+                        context.save();
+                        context.translate(x, y);
+                        context.rotate(body.angle);
+                        context.fillStyle = body.plugin.textColor;
+                        context.fillText(body.plugin.text, 0, 2); // adjust y slightly for font baseline
+                        context.restore();
+                    }
+                });
+            });
+
+            const mouse = Mouse.create(render.canvas);
+            const mConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.2, render: { visible: false } }
+            });
+            World.add(engine.world, mConstraint);
+            render.mouse = mouse;
+
+            const runner = Runner.create();
+            Runner.run(runner, engine);
+            Render.run(render);
+
+            window.addEventListener('resize', () => {
+                render.canvas.width = window.innerWidth;
+                render.canvas.height = window.innerHeight;
+                render.options.width = window.innerWidth;
+                render.options.height = window.innerHeight;
+                
+                // Update wall positions on resize
+                Matter.Body.setPosition(walls[0], { x: window.innerWidth/2, y: window.innerHeight+60 });
+                Matter.Body.setPosition(walls[1], { x: -60, y: window.innerHeight/2 });
+                Matter.Body.setPosition(walls[2], { x: window.innerWidth+60, y: window.innerHeight/2 });
+            });
+        }
+        initPhysics();
+
+
+        // --- 3. INTERNSHIP HANDBOOK ---
+        const internships = [
+            {
+                company: "美团-大众点评",
+                role: "用户策略运营实习生",
+                period: "2025.12–2026.03",
+                tagColor: "blue",
+                projects: [
+                    {
+                        tag: "触达策略",
+                        title: "用户分层触达模型",
+                        desc: "设计用户分层触达模型，千万级样本AB Test，核心人群Push UVCTR 0.55%→0.9%（+0.35pp）",
+                        metric: "+0.35pp CTR",
+                    },
+                    {
+                        tag: "AI Agent",
+                        title: "Push文案生成Agent",
+                        desc: "设计Push文案生成Agent，构建「素材校验—受众确认—场景选择—风险检测」流程",
+                        metric: "流程构建",
+                    },
+                ],
+                skills: ["AB Test", "SQL", "Prompt Engineering"],
+            },
+            {
+                company: "碳益科技",
+                role: "产品实习生",
+                period: "2025.07–2025.11",
+                tagColor: "orange",
+                projects: [
+                    {
+                        tag: "评分重构",
+                        title: "供应商评分机制重构",
+                        desc: "引入0.5分中间层，300家供应商对照实验，70分以上占比提升20%，审核周期缩短15%",
+                        metric: "周期-15%",
+                    },
+                    {
+                        tag: "功能优化",
+                        title: "核心功能激活率提升",
+                        desc: "拆解核心功能路径，识别阻力节点，推动激活率与完成率提升",
+                        metric: "激活率↑",
+                    },
+                ],
+                skills: ["Axure", "PRD", "竞品分析"],
+            },
+            {
+                company: "蔚来汽车",
+                role: "产品运营实习生",
+                period: "2025.02–2025.06",
+                tagColor: "green",
+                projects: [
+                    {
+                        tag: "规则优化",
+                        title: "系统规则优化",
+                        desc: "分析千条日志构建异常数据集，识别规则冲突，协同研发修正逻辑",
+                        metric: "逻辑修正",
+                    },
+                    {
+                        tag: "培训落地",
+                        title: "2万人系统培训落地",
+                        desc: "推动2万人系统培训，通过率98%，沉淀可复用规范",
+                        metric: "通过率98%",
+                    },
+                ],
+                skills: ["B端产品", "数据分析", "用户调研"],
+            },
+        ];
+
+        function renderInternshipGrid() {
+            const grid = document.getElementById('internship-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            internships.forEach((intern, index) => {
+                const card = document.createElement('div');
+                card.className = 'intern-card reveal-item';
+                
+                // Top Section - project tags display
+                const topSection = document.createElement('div');
+                topSection.className = 'intern-card-top';
+
+                // Color config per company
+                const colorConfig = {
+                    blue:   { tagBg: '#E8F0FE', tagText: '#1a4fa0', periodBg: '#E8F0FE', periodText: '#1a4fa0' },
+                    green:  { tagBg: '#E8F5E9', tagText: '#2E7D32', periodBg: '#E8F5E9', periodText: '#2E7D32' },
+                    orange: { tagBg: '#FFF8E1', tagText: '#8a5200', periodBg: '#FFF8E1', periodText: '#8a5200' },
+                };
+                const cc = colorConfig[intern.tagColor] || colorConfig.blue;
+
+                topSection.innerHTML = `
+                    <span class="intern-card-tag" style="background: ${cc.periodBg}; color: ${cc.periodText}; border: none;">${intern.period}</span>
+                    <div class="intern-tag-list">
+                        ${intern.projects.map(p => `
+                            <span class="intern-project-pill" style="background: ${cc.tagBg}; color: ${cc.tagText};">
+                                ${p.tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                    <div class="intern-card-company-preview" style="color: ${cc.tagText};">
+                        ${intern.company}
+                    </div>
+                `;
+                card.appendChild(topSection);
+
+                // Bottom Section
+                const bottomSection = document.createElement('div');
+                bottomSection.className = 'intern-card-bottom';
+                
+                const header = document.createElement('div');
+                header.innerHTML = `
+                    <h3 class="intern-company">${intern.company}</h3>
+                    <p class="intern-role">${intern.role}</p>
+                `;
+                bottomSection.appendChild(header);
+
+                // Projects
+                const projectsContainer = document.createElement('div');
+                projectsContainer.className = 'intern-projects';
+                
+                intern.projects.forEach(project => {
+                    const projDiv = document.createElement('div');
+                    projDiv.className = 'intern-project';
+                    projDiv.innerHTML = `
+                        <div class="intern-project-header">
+                            <div class="intern-project-title-wrap">
+                                <span class="intern-project-tag">${project.tag}</span>
+                                <h4 class="intern-project-title">${project.title}</h4>
+                            </div>
+                            <span class="intern-project-metric">${project.metric}</span>
+                        </div>
+                        <p class="intern-project-desc">${project.desc}</p>
+                    `;
+                    projectsContainer.appendChild(projDiv);
+                });
+                bottomSection.appendChild(projectsContainer);
+
+                // Skills
+                const skillsContainer = document.createElement('div');
+                skillsContainer.className = 'intern-skills';
+                intern.skills.forEach(skill => {
+                    const skillSpan = document.createElement('span');
+                    skillSpan.className = 'intern-skill';
+                    skillSpan.textContent = skill;
+                    skillsContainer.appendChild(skillSpan);
+                });
+                bottomSection.appendChild(skillsContainer);
+
+                // Actions
+                const actionsContainer = document.createElement('div');
+                actionsContainer.className = 'intern-actions';
+                
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'intern-btn intern-btn-outline';
+                toggleBtn.textContent = '查看项目 ↗';
+                toggleBtn.addEventListener('click', () => {
+                    card.classList.toggle('expanded');
+                    toggleBtn.textContent = card.classList.contains('expanded') ? '收起项目 ↗' : '查看项目 ↗';
+                });
+                
+                const demoBtn = document.createElement('button');
+                demoBtn.className = 'intern-btn intern-btn-filled';
+                demoBtn.textContent = '了解更多 ↗';
+                
+                actionsContainer.appendChild(toggleBtn);
+                actionsContainer.appendChild(demoBtn);
+                
+                bottomSection.appendChild(actionsContainer);
+
+                card.appendChild(bottomSection);
+                grid.appendChild(card);
+            });
+        }
+
+        renderInternshipGrid();
+
+
+        // --- 4. AI AGENT GACHA ---
+        const agents = [
+            { id: 1, emoji: "🤖", title: "代码助手", desc: "将混乱的 JS 重构为 ES6 模块。", code: "const clean = (code) => refactor(code);", rarity: "legendary", color: "#FFD700" },
+            { id: 2, emoji: "📊", title: "数据看板", desc: "用 D3.js 构建实时数据可视化平台。", code: "d3.select('svg').datum(data).call(chart);", rarity: "rare", color: "#7B68EE" },
+            { id: 3, emoji: "🌐", title: "翻译引擎", desc: "基于 GPT 的多语言法律文本翻译工具。", code: "await translate(text, { to: 'zh' });", rarity: "common", color: "#ef4444" }
+        ];
+        
+        const rarityConfig = {
+            common: { color: '#ef4444', label: '普通', bg: '#fee2e2', text: '#991b1b' },
+            rare: { color: '#a855f7', label: '稀有', bg: '#f3e8ff', text: '#6b21a8' },
+            legendary: { color: '#eab308', label: '传说', bg: '#fef9c3', text: '#854d0e' }
+        };
+
+        let agentIdx = 0;
+        let gachaState = 'IDLE'; // IDLE, SPINNING, DISPENSED
+        const knob = document.getElementById('gacha-knob');
+        const dispenser = document.getElementById('dispenser-slot');
+        const modal = document.getElementById('pokeball-modal');
+        const archiveContent = document.getElementById('archive-content');
+        const gachaStatus = document.getElementById('gacha-status');
+        let currentAgent = null;
+
+        function createPokeballSVG(color, size = 60, animate = false) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 100 100");
+            svg.setAttribute("width", size);
+            svg.setAttribute("height", size);
+            if (animate) {
+                svg.style.animation = "pokeSpin 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
+            }
+            
+            svg.innerHTML = `
+                <circle cx="50" cy="50" r="48" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                <path d="M2,50 A48,48 0 0,1 98,50 Z" fill="${color}" stroke="#1e293b" stroke-width="4"/>
+                <rect x="0" y="46" width="100" height="8" fill="#1e293b"/>
+                <circle cx="50" cy="50" r="14" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/>
+                <circle cx="50" cy="50" r="6" fill="#cbd5e1"/>
+            `;
+            return svg;
+        }
+
+        knob.addEventListener('click', () => {
+            if(gachaState !== 'IDLE') return;
+            gachaState = 'SPINNING';
+            gachaStatus.textContent = "抽取中...";
+            
+            // 1. Spin
+            knob.classList.add('spinning');
+            
+            setTimeout(() => {
+                knob.classList.remove('spinning');
+                
+                // 2. Dispense
+                currentAgent = agents[agentIdx % agents.length];
+                const rarityInfo = rarityConfig[currentAgent.rarity];
+                
+                const capsule = document.createElement('div');
+                capsule.className = 'capsule';
+                capsule.style.background = 'transparent';
+                capsule.style.border = 'none';
+                capsule.style.boxShadow = 'none';
+                capsule.style.top = '-100px';
+                capsule.style.left = 'calc(50% - 50px)'; // Center in slot
+                capsule.style.transition = 'top 0.5s cubic-bezier(0.5, 1.5, 0.5, 1)';
+                capsule.style.animation = 'bounce 1s infinite';
+                
+                const svg = createPokeballSVG(rarityInfo.color, 100, true);
+                capsule.appendChild(svg);
+                
+                dispenser.appendChild(capsule);
+                
+                // Trigger drop
+                requestAnimationFrame(() => capsule.style.top = '2px');
+                
+                gachaState = 'DISPENSED';
+                gachaStatus.textContent = "点击精灵球打开！";
+
+                // 3. Open Logic
+                capsule.addEventListener('click', () => {
+                    document.getElementById('pb-emoji').textContent = currentAgent.emoji;
+                    document.getElementById('pb-title').textContent = currentAgent.title;
+                    document.getElementById('pb-desc').textContent = currentAgent.desc;
+                    document.getElementById('pb-code').textContent = currentAgent.code;
+                    
+                    const rarityEl = document.getElementById('pb-rarity');
+                    rarityEl.textContent = rarityInfo.label;
+                    rarityEl.style.background = rarityInfo.bg;
+                    rarityEl.style.color = rarityInfo.text;
+                    
+                    document.getElementById('pb-top-path').setAttribute('fill', rarityInfo.color);
+                    
+                    modal.classList.add('active');
+                    modal.currentCapsule = capsule;
+                });
+
+            }, 600);
+        });
+
+        // Open Modal Button
+        document.getElementById('pokeball-open-btn').addEventListener('click', () => {
+            modal.classList.add('opened');
+        });
+
+        // Close Modal & Archive
+        document.getElementById('pokeball-close').addEventListener('click', () => {
+            modal.classList.remove('active');
+            modal.classList.remove('opened');
+            
+            if(modal.currentCapsule) {
+                const cap = modal.currentCapsule;
+                
+                // Add to archive
+                if (agentIdx === 0) {
+                    archiveContent.innerHTML = ''; // Clear empty state
+                }
+                
+                const rarityInfo = rarityConfig[currentAgent.rarity];
+                const archiveItem = document.createElement('div');
+                archiveItem.className = 'archive-item';
+                archiveItem.title = currentAgent.title;
+                archiveItem.appendChild(createPokeballSVG(rarityInfo.color, 40));
+                archiveContent.appendChild(archiveItem);
+                
+                cap.remove();
+                gachaState = 'IDLE';
+                gachaStatus.textContent = "点击按钮抽取作品";
+                agentIdx++;
+            }
+        });
+
+        function stopGachaAnimations() {
+            if(gachaState !== 'IDLE') {
+                const caps = document.querySelectorAll('.capsule');
+                caps.forEach(c => c.remove());
+                knob.classList.remove('spinning');
+                modal.classList.remove('active');
+                modal.classList.remove('opened');
+                gachaState = 'IDLE';
+                gachaStatus.textContent = "点击按钮抽取作品";
+            }
+        }
+
+
+        // --- 4.5 PORTFOLIO GRID ---
+        const projects = [
+            {
+                id: "salary",
+                title: "工资计算器",
+                subtitle: "Salary Receipt",
+                tag: "macOS App",
+                tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
+                description: "菜单栏常驻工具，实时显示今日已赚金额、本月累计收入、距发薪倒计时，支持餐补/打车补贴倒计时与心愿单进度追踪。",
+                highlights: ["实时薪资滚动计算", "心愿单存钱进度", "餐补/打车倒计时"],
+                skills: ["Electron", "React", "Vite", "独立开发"],
+                previewType: "app",
+                links: [
+                    { label: "GitHub", href: "https://github.com/promise1s/salary_receipt", style: "outline" },
+                    { label: "查看演示", href: "https://github.com/promise1s/salary_receipt", style: "fill" },
+                ],
+            },
+            {
+                id: "competitive",
+                title: "OTA 酒店商家端竞品分析",
+                subtitle: "Competitive Research",
+                tag: "产品分析",
+                tagColor: { bg: "#E3F2FD", text: "#1565C0" },
+                description: "对比美团、携程、飞猪三平台商家评价管理能力，核心发现：美团技术深度最强但用户感知弱于携程，提出三项可落地的产品优化建议。",
+                highlights: [
+                    "携程「6个月无差评」提示：低成本高感知",
+                    "美团527维度观点抽取能力未在C端透出",
+                    "建议：差评处理进展更新 + 历史差评有效期机制",
+                ],
+                skills: ["竞品研究", "用户体验", "产品建议", "数据分析"],
+                previewType: "doc",
+                links: [
+                    { label: "查看报告", href: "#", style: "fill" },
+                ],
+            },
+            {
+                id: "push",
+                title: "Push 文案生成 Agent",
+                subtitle: "AI Copywriting Tool",
+                tag: "AI Demo",
+                tagColor: { bg: "#EDE7F6", text: "#4527A0" },
+                description: "基于美团实习触达策略设计的 AI Agent，构建「素材校验 → 受众确认 → 场景选择 → 风险检测」四段流程，输入用户分层场景自动生成合规 Push 文案。",
+                highlights: [
+                    "四阶段流水线生成流程",
+                    "支持普通日 / 节假日场景切换",
+                    "Style Library 管理品牌文案规范",
+                ],
+                skills: ["AI Agent", "Prompt 设计", "产品设计", "Google AI Studio"],
+                previewType: "agent",
+                links: [
+                    { label: "查看 PRD", href: "#", style: "outline" },
+                    { label: "体验 Demo（即将上线）", href: "#", style: "disabled" },
+                ],
+            },
+        ];
+
+        function getPreviewHTML(type) {
+            if (type === "app") {
+                return `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                        <div style="width: 90px; background: #fff; border-radius: 12px; border: 1px solid #e0e0e0; padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+                            <div style="font-size: 9px; color: #aaa; text-align: center; font-family: var(--font-body);">今日已赚</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; text-align: center; font-family: var(--font-display);">¥ 156.36</div>
+                            <div style="font-size: 8px; color: #aaa; text-align: center; font-family: var(--font-body);">¥31.25/h</div>
+                            <div style="height: 1px; background: #f0f0f0; margin: 2px 0;"></div>
+                            <div style="display: flex; justify-content: space-between; font-family: var(--font-body);">
+                                <div style="font-size: 8px; color: #888;">本月累计</div>
+                                <div style="font-size: 8px; color: #2E7D32; font-weight: 600;">¥2,906</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-family: var(--font-body);">
+                                <div style="font-size: 8px; color: #888;">距发薪</div>
+                                <div style="font-size: 8px; color: #1a1a1a; font-weight: 600;">23 天</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            if (type === "doc") {
+                return `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 16px; width: 100%;">
+                        <div style="width: 100%; display: flex; flex-direction: column; gap: 6px;">
+                            ${[
+                                { label: "差评回复质量", meituan: 90, ctrip: 65, fliggy: 35 },
+                                { label: "平台信誉背书", meituan: 40, ctrip: 80, fliggy: 30 },
+                                { label: "底层数据能力", meituan: 95, ctrip: 50, fliggy: 30 },
+                            ].map(row => `
+                                <div>
+                                    <div style="font-size: 9px; color: #888; margin-bottom: 3px; font-family: var(--font-body);">${row.label}</div>
+                                    <div style="display: flex; gap: 2px; align-items: center;">
+                                        ${[
+                                            { val: row.meituan, color: "#FF6B35", label: "美团" },
+                                            { val: row.ctrip, color: "#1565C0", label: "携程" },
+                                            { val: row.fliggy, color: "#FF9800", label: "飞猪" },
+                                        ].map(bar => `
+                                            <div style="flex: 1;">
+                                                <div style="height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden;">
+                                                    <div style="width: ${bar.val}%; height: 100%; background: ${bar.color}; border-radius: 4px;"></div>
+                                                </div>
+                                                <div style="font-size: 7px; color: #aaa; text-align: center; margin-top: 1px; font-family: var(--font-body);">${bar.label}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            // agent
+            return `
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <div style="width: 160px; background: #F8F6FF; border-radius: 10px; border: 1px solid #D1C4E9; padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; font-family: var(--font-body);">
+                        <div style="font-size: 9px; color: #7E57C2; font-weight: 600;">Push Copywriting Agent</div>
+                        <div style="height: 36px; background: #fff; border-radius: 6px; border: 1px solid #E8E0FF; padding: 4px 7px;">
+                            <div style="font-size: 8px; color: #ccc;">输入场景...</div>
+                        </div>
+                        <div style="display: flex; gap: 4px;">
+                            ${["日常", "节假日"].map((s, i) => `
+                                <div style="flex: 1; text-align: center; font-size: 8px; padding: 3px 0; border-radius: 4px; border: 1px solid #D1C4E9; background: ${i === 0 ? '#EDE7F6' : '#fff'}; color: ${i === 0 ? '#4527A0' : '#999'};">${s}</div>
+                            `).join('')}
+                        </div>
+                        <div style="background: #7C4DFF; border-radius: 5px; padding: 5px 0; text-align: center; font-size: 8px; color: #fff;">
+                            ✦ 生成文案
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 3px;">
+                            <div style="height: 7px; background: #EDE7F6; border-radius: 3px; width: 100%;"></div>
+                            <div style="height: 7px; background: #EDE7F6; border-radius: 3px; width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPortfolioGrid() {
+            const grid = document.getElementById('portfolio-grid');
+            if (!grid) return;
+
+            grid.innerHTML = projects.map(proj => `
+                <div class="portfolio-card reveal-item">
+                    <div class="portfolio-preview">
+                        ${getPreviewHTML(proj.previewType)}
+                        <span class="portfolio-tag" style="background: ${proj.tagColor.bg}; color: ${proj.tagColor.text};">
+                            ${proj.tag}
+                        </span>
+                    </div>
+                    <div class="portfolio-content">
+                        <div>
+                            <p class="portfolio-card-title">${proj.title}</p>
+                            <p class="portfolio-card-subtitle">${proj.subtitle}</p>
+                        </div>
+                        <p class="portfolio-desc">${proj.description}</p>
+                        <div class="portfolio-highlights">
+                            ${proj.highlights.map(h => `
+                                <div class="portfolio-highlight-item">
+                                    <span class="portfolio-highlight-bullet" style="color: ${proj.tagColor.text};">›</span>
+                                    <span class="portfolio-highlight-text">${h}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="portfolio-skills">
+                            ${proj.skills.map(s => `
+                                <span class="portfolio-skill-tag">${s}</span>
+                            `).join('')}
+                        </div>
+                        <div class="portfolio-links">
+                            ${proj.links.map(link => {
+                                if (link.style === "disabled") {
+                                    return `<div class="portfolio-link disabled">${link.label}</div>`;
+                                }
+                                const styleAttr = link.style === "fill" 
+                                    ? `background: ${proj.tagColor.bg}; color: ${proj.tagColor.text}; border: 1px solid ${proj.tagColor.bg};`
+                                    : ``;
+                                const className = link.style === "fill" ? "portfolio-link" : "portfolio-link outline";
+                                return `<a href="${link.href}" target="_blank" rel="noopener noreferrer" class="${className}" style="${styleAttr}">${link.label} ↗</a>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Easter egg logic
+        const eggBtn = document.getElementById('egg-btn');
+        const eggTooltip = document.getElementById('egg-tooltip');
+        const gachaSection = document.getElementById('gacha-section');
+        const gachaCloseBtn = document.getElementById('gacha-close-btn');
+
+        if (eggBtn && eggTooltip && gachaSection) {
+            eggBtn.addEventListener('click', () => {
+                eggTooltip.classList.toggle('show');
+                gachaSection.classList.remove('hidden');
+                gachaSection.style.display = 'flex';
+            });
+        }
+
+        if (gachaCloseBtn && gachaSection) {
+            gachaCloseBtn.addEventListener('click', () => {
+                gachaSection.classList.add('hidden');
+                gachaSection.style.display = 'none';
+            });
+        }
+
+        renderPortfolioGrid();
+
+        // --- Scroll Reveal Observer ---
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reveal-item').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // --- 5. SKILLS & CONTACT ---
+        const toast = document.getElementById('toast');
+
+        function triggerSkills() {
+            // Deprecated: Skills are now handled by Tarot Carousel
+        }
+
+        // --- 6. SKILLS FLIP CARD ---
+        const tarotSkills = [
+            { id: 1, icon: "⚖️", arcana: "I",    title: "法律研究",   subtitle: "The Scholar",    desc: "熟练检索 CNKI、北大法宝、Westlaw，擅长比较法与监管文本分析" },
+            { id: 2, icon: "📝", arcana: "II",   title: "学术写作",   subtitle: "The Scribe",     desc: "中英文法学论文写作，熟悉学术规范、脚注引注格式与论证结构" },
+            { id: 3, icon: "💻", arcana: "III",  title: "前端开发",   subtitle: "The Architect",  desc: "React / Next.js / Tailwind，构建交互式个人网站与法律科技原型" },
+            { id: 4, icon: "🤖", arcana: "IV",   title: "AI 工具",    subtitle: "The Oracle",     desc: "Prompt Engineering 深度实践，Claude / GPT / Gemini 多模型协作" },
+            { id: 5, icon: "📊", arcana: "V",    title: "数据分析",   subtitle: "The Analyst",    desc: "Python pandas，法律文本量化研究、A/B 测试数据解读与可视化" },
+            { id: 6, icon: "🏦", arcana: "VI",   title: "金融监管法", subtitle: "The Regulator",  desc: "专注稳定币与 DeFi 监管框架，熟悉 FSB、BIS 等国际监管文件" },
+            { id: 7, icon: "🔍", arcana: "VII",  title: "合规审查",   subtitle: "The Inspector",  desc: "合同条款风险识别、监管文件解读、跨境合规差异比较" },
+            { id: 8, icon: "🌍", arcana: "VIII", title: "雅思 7.0",   subtitle: "The Linguist",   desc: "学术英语读写无障碍，法律英文文献精读，英中法律术语互译" },
+            { id: 9, icon: "🎨", arcana: "IX",   title: "产品设计",   subtitle: "The Visionary",  desc: "Figma 原型与交互设计，法律科技产品用户路径规划与体验优化" },
+            { id: 10, icon: "🤝", arcana: "X",   title: "项目管理",   subtitle: "The Commander",  desc: "跨团队协作统筹，实习期间主导 A/B 测试与内容分发全流程" },
+        ];
+
+        (function initSkillsFlip() {
+            const flipInner  = document.getElementById('tarot-flip-inner');
+            const listEl     = document.getElementById('skills-list');
+            const tfArcana   = document.getElementById('tf-arcana');
+            const tfIcon     = document.getElementById('tf-icon');
+            const tfName     = document.getElementById('tf-name');
+            const tfSub      = document.getElementById('tf-sub');
+            const tfDesc     = document.getElementById('tf-desc');
+            if (!flipInner || !listEl) return;
+
+            let currentIndex = -1;
+            let flipTimer = null;
+
+            function showSkill(i) {
+                if (i === currentIndex) return;
+                const skill = tarotSkills[i];
+
+                // If already showing back face, flip to front first, update, then flip back
+                if (currentIndex !== -1) {
+                    flipInner.classList.remove('flipped');
+                    clearTimeout(flipTimer);
+                    flipTimer = setTimeout(() => {
+                        updateContent(skill);
+                        flipInner.classList.add('flipped');
+                    }, 340);
+                } else {
+                    updateContent(skill);
+                    flipInner.classList.add('flipped');
+                }
+
+                currentIndex = i;
+                listEl.querySelectorAll('.skill-list-item').forEach((el, j) => {
+                    el.classList.toggle('active', j === i);
+                });
+            }
+
+            function updateContent(skill) {
+                tfArcana.textContent = 'ARCANA ' + skill.arcana;
+                tfIcon.textContent   = skill.icon;
+                tfName.textContent   = skill.title;
+                tfSub.textContent    = skill.subtitle;
+                tfDesc.textContent   = skill.desc;
+            }
+
+            // Build list
+            tarotSkills.forEach((skill, i) => {
+                const item = document.createElement('div');
+                item.className = 'skill-list-item';
+                item.innerHTML = `
+                    <span class="skill-list-num">${skill.arcana}</span>
+                    <span class="skill-list-icon">${skill.icon}</span>
+                    <span class="skill-list-name">${skill.title}</span>
+                    <span class="skill-list-sub">${skill.subtitle}</span>
+                `;
+                item.addEventListener('mouseenter', () => showSkill(i));
+                listEl.appendChild(item);
+            });
+
+            // Reset to front on mouse leave from whole layout
+            const layout = document.querySelector('.skills-layout');
+            if (layout) {
+                layout.addEventListener('mouseleave', () => {
+                    clearTimeout(flipTimer);
+                    flipInner.classList.remove('flipped');
+                    currentIndex = -1;
+                    listEl.querySelectorAll('.skill-list-item').forEach(el => el.classList.remove('active'));
+                });
+            }
+        })();
+
+        // --- CONFETTI ANIMATION ON SUMMARY SECTION ---
+        const summarySection = document.getElementById('summary-section');
+        let confettiFired = false;
+
+        const confettiObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !confettiFired) {
+                    confettiFired = true;
+                    fireConfetti();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (summarySection) {
+            confettiObserver.observe(summarySection);
+        }
+
+        function fireConfetti() {
+            const colors = ['var(--color-primary)', 'var(--color-secondary)', 'var(--color-accent)', 'var(--color-text-main)'];
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+    </script>
+</body>
+</html>
