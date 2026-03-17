@@ -301,7 +301,7 @@
         }
         .internship-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             width: 100%;
             max-width: 1100px;
@@ -312,127 +312,82 @@
         .intern-card {
             background: #FFFFFF;
             border: 1px solid var(--color-dot);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .intern-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        .intern-card-top {
-            background: var(--color-bg);
-            height: 160px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            border-bottom: 1px solid var(--color-dot);
-            padding: 16px;
-        }
-        .intern-card-tag {
-            background: rgba(0,0,0,0.05);
-            color: var(--color-text-main);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            font-family: var(--font-display);
-        }
-        .intern-tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            padding: 0 16px;
-        }
-        .intern-project-pill {
-            font-size: 12px;
-            font-weight: 600;
-            padding: 5px 14px;
-            border-radius: 20px;
-            letter-spacing: 0.03em;
-            font-family: var(--font-display);
-        }
-        .intern-card-company-preview {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            opacity: 0.5;
-            margin-top: 4px;
-            font-family: var(--font-display);
-        }
-        .intern-card-bottom {
-            padding: 24px;
+            border-radius: 14px;
+            padding: 22px 22px 18px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            flex: 1;
+            transition: box-shadow 0.2s ease;
+        }
+        .intern-card:hover {
+            box-shadow: 0 4px 20px rgba(0,51,102,0.08);
+        }
+        .intern-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
         .intern-company {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--color-primary);
-            margin: 0;
+            margin: 0 0 4px;
             font-family: var(--font-display);
         }
         .intern-role {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--color-text-main);
             margin: 0;
-            line-height: 1.6;
+            opacity: 0.7;
+        }
+        .intern-period-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-weight: 500;
+            margin-left: 8px;
+            font-family: var(--font-display);
         }
         .intern-projects {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-height: 0;
-            overflow-y: auto;
-            transition: max-height 0.3s ease, margin-top 0.3s ease;
-            opacity: 0;
-        }
-        .intern-card.expanded .intern-projects {
-            max-height: 30vh;
-            margin-top: 8px;
-            opacity: 1;
+            gap: 10px;
+            border-top: 1px solid var(--color-dot);
+            padding-top: 14px;
         }
         .intern-project {
             background: var(--color-bg);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px 13px;
             border: 1px solid var(--color-dot);
         }
         .intern-project-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 0;
         }
         .intern-project-title-wrap {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             flex: 1;
             min-width: 0;
         }
         .intern-project-tag {
-            font-size: 11px;
-            padding: 2px 6px;
+            font-size: 10px;
+            padding: 2px 7px;
             border-radius: 4px;
-            background: rgba(0,0,0,0.05);
-            color: var(--color-text-main);
             font-weight: 600;
             white-space: nowrap;
             flex-shrink: 0;
+            letter-spacing: 0.05em;
         }
         .intern-project-title {
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--color-text-main);
             margin: 0;
             white-space: nowrap;
@@ -440,65 +395,71 @@
             text-overflow: ellipsis;
         }
         .intern-project-metric {
-            font-size: 12px;
-            color: var(--color-secondary);
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-left: 8px;
         }
         .intern-project-desc {
             font-size: 12px;
             color: var(--color-text-main);
             margin: 0;
-            line-height: 1.5;
-            opacity: 0.8;
+            line-height: 1.7;
+            opacity: 0.75;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, margin-top 0.35s ease;
+        }
+        .intern-card.expanded .intern-project-desc {
+            max-height: 120px;
+            margin-top: 8px;
         }
         .intern-skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: auto;
+            gap: 6px;
         }
         .intern-skill {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--color-text-main);
             border: 1px solid var(--color-dot);
-            border-radius: 4px;
-            padding: 4px 10px;
+            border-radius: 6px;
+            padding: 2px 9px;
             background: #FFFFFF;
+            opacity: 0.8;
         }
         .intern-actions {
             display: flex;
             gap: 12px;
-            margin-top: 8px;
+            margin-top: 4px;
         }
         .intern-btn {
             flex: 1;
-            padding: 10px 0;
+            padding: 8px 0;
             text-align: center;
-            border-radius: 6px;
-            font-size: 13px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
             border: none;
             font-family: var(--font-display);
+            letter-spacing: 0.03em;
         }
         .intern-btn-outline {
-            background: #FFFFFF;
-            border: 1px solid var(--color-dot);
-            color: var(--color-text-main);
-        }
-        .intern-btn-outline:hover {
-            background: var(--color-bg);
+            background: transparent;
+            border: 1px solid;
         }
         .intern-btn-filled {
-            background: rgba(43, 43, 43, 0.05);
+            background: rgba(0,51,102,0.05);
             color: var(--color-primary);
+            border: 1px solid var(--color-dot);
         }
         .intern-btn-filled:hover {
-            background: rgba(43, 43, 43, 0.1);
+            background: rgba(0,51,102,0.1);
         }
 
-        /* --- SECTION 3: PORTFOLIO --- */
+                /* --- SECTION 3: PORTFOLIO --- */
         #portfolio-section {
             background: var(--color-bg);
             border-top: 1px solid var(--color-dot);
@@ -1339,7 +1300,7 @@
             </nav>
 
             <div class="hero-overlay">
-                <h1 class="hero-title">Rachel Angelica</h1>
+                <h1 class="hero-title">邵许诺</h1>
                 <div class="hero-subtitle">立志成为产品经理的实习生</div>
             </div>
             <canvas id="hero-canvas"></canvas>
@@ -1470,7 +1431,7 @@
             </div>
             
             <div class="footer-bottom" style="width: 100%; display: flex; justify-content: space-between; padding: 20px 40px; border-top: 1px solid var(--color-dot); font-size: 0.8rem; color: var(--color-secondary); font-weight: 500; text-transform: uppercase;">
-                <div>© 2026 Rachel Angelica</div>
+                <div>© 2026 邵许诺</div>
                 <div style="display: flex; gap: 20px;">
                     <span style="cursor: pointer;">About</span>
                     <span style="cursor: pointer;">Privacy</span>
@@ -1762,7 +1723,10 @@
             // Shape Generators
             // Colors: Navy, Yellow, Steel Blue, Gray, Black (High Contrast)
             const colors = ['#FFCC66', '#003366', '#336699', '#E0E0E0', '#1A2026'];
-            const labels = ["产品思维", "用户画像"]; 
+            const allLabels = ["passion", "enthusiastic", "patient", "positive", "reliable", "steady", "intelligent"];
+            // 每次随机选3个不重复
+            const shuffled = allLabels.sort(() => Math.random() - 0.5);
+            const labels = shuffled.slice(0, 3);
             const shapes = [];
             window.physicsShapes = shapes; // Expose for theme toggle
             
@@ -1881,178 +1845,145 @@
 
 
         // --- 3. INTERNSHIP HANDBOOK ---
-        const internships = [
-            {
-                company: "美团-大众点评",
-                role: "用户策略运营实习生",
-                period: "2025.12 – 2026.03",
-                tagColor: "blue",
-                projects: [
-                    {
-                        tag: "触达策略",
-                        title: "用户分层触达模型",
-                        desc: "设计分层归类与匹配机制，在千万级用户样本中开展 AB Test 验证，核心人群 Push UVCTR 0.55% → 0.9%（+0.35pp），沉淀为可复用框架。",
-                        metric: "+0.35pp CTR",
-                    },
-                    {
-                        tag: "AI Agent",
-                        title: "Push 文案生成 Agent",
-                        desc: "构建「素材校验—受众确认—场景选择—风险检测」生成流程；通过 AB 实验优化承接结构，延长高决策场景用户停留时长。",
-                        metric: "停留时长↑",
-                    },
-                ],
-                skills: ["AB Test", "SQL", "Prompt Engineering"],
-            },
-            {
-                company: "蔚来汽车",
-                role: "产品运营实习生",
-                period: "2025.02 – 2025.06",
-                tagColor: "green",
-                projects: [
-                    {
-                        tag: "规则优化",
-                        title: "智能合同系统规则优化",
-                        desc: "分析上千条系统日志构建异常行为数据集，拆解合同审批流程识别规则冲突，输出优化方案并协同研发修正逻辑，提升系统稳定性与合规准确性。",
-                        metric: "稳定性↑",
-                    },
-                    {
-                        tag: "培训落地",
-                        title: "2万人系统培训落地",
-                        desc: "推动面向2万人的系统培训与规则说明落地，通过率98%，形成可复用系统使用规范。",
-                        metric: "通过率 98%",
-                    },
-                ],
-                skills: ["B端产品", "数据分析", "用户调研"],
-            },
-            {
-                company: "碳益科技",
-                role: "产品实习生",
-                period: "2025.07 – 2025.11",
-                tagColor: "orange",
-                projects: [
-                    {
-                        tag: "细化颗粒",
-                        title: "供应商评分机制重构",
-                        desc: "引入0.5分中间层级解决二元评分区分度不足问题；300家供应商随机对照实验，70分以上占比提升约20%，审核周期缩短15%。",
-                        metric: "审核周期 -15%",
-                    },
-                    {
-                        tag: "功能优化",
-                        title: "核心功能激活率提升",
-                        desc: "拆解核心功能使用路径，识别入口曝光、流程复杂度与价值认知阻力节点，结合渠道行为差异设计AB实验，推动激活率与完成率提升。",
-                        metric: "激活率↑",
-                    },
-                ],
-                skills: ["Axure", "PRD", "竞品分析"],
-            },
-        ];
+        // ── 从 Notion API 动态获取实习数据 ──
+        const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
+
+        // tagColor 映射
+        function getTagColorByCompany(company) {
+            if (company.includes('美团')) return 'blue';
+            if (company.includes('蔚来')) return 'green';
+            return 'orange';
+        }
+
+        async function loadInternships() {
+            try {
+                const [internRes, projRes] = await Promise.all([
+                    fetch(API_BASE + '/api/internships'),
+                    fetch(API_BASE + '/api/internship-projects')
+                ]);
+                const internData = await internRes.json();
+                const projData   = await projRes.json();
+
+                // 把项目按公司名分组
+                const projByCompany = {};
+                projData.forEach(p => {
+                    const co = p.company;
+                    if (!projByCompany[co]) projByCompany[co] = [];
+                    projByCompany[co].push({
+                        tag:    p.tag,
+                        title:  p.name,
+                        desc:   p.description,
+                        metric: p.metric,
+                    });
+                });
+
+                const internships = internData.map(item => ({
+                    company:  item.company,
+                    role:     item.role,
+                    period:   item.startDate + ' – ' + item.endDate,
+                    tagColor: getTagColorByCompany(item.company),
+                    projects: projByCompany[item.company] || [],
+                    skills:   [], // 技能标签暂从项目里合并
+                }));
+
+                renderInternshipGrid(internships);
+            } catch(e) {
+                console.error('Failed to load internships:', e);
+                renderInternshipGrid([]); // 降级空状态
+            }
+        }
+
 
         function renderInternshipGrid() {
             const grid = document.getElementById('internship-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
+            const colorConfig = {
+                blue:   { tagBg: '#E8F0FE', tagText: '#1a4fa0' },
+                green:  { tagBg: '#E6F4EA', tagText: '#1e6b3a' },
+                orange: { tagBg: '#FEF3E2', tagText: '#8a5200' },
+            };
+
             internships.forEach((intern, index) => {
                 const card = document.createElement('div');
                 card.className = 'intern-card reveal-item';
-                
-                // Top Section - project tags display
-                const topSection = document.createElement('div');
-                topSection.className = 'intern-card-top';
-
-                // Color config per company
-                const colorConfig = {
-                    blue:   { tagBg: '#E8F0FE', tagText: '#1a4fa0', periodBg: '#E8F0FE', periodText: '#1a4fa0' },
-                    green:  { tagBg: '#E8F5E9', tagText: '#2E7D32', periodBg: '#E8F5E9', periodText: '#2E7D32' },
-                    orange: { tagBg: '#FFF8E1', tagText: '#8a5200', periodBg: '#FFF8E1', periodText: '#8a5200' },
-                };
                 const cc = colorConfig[intern.tagColor] || colorConfig.blue;
 
-                topSection.innerHTML = `
-                    <span class="intern-card-tag" style="background: ${cc.periodBg}; color: ${cc.periodText}; border: none;">${intern.period}</span>
-                    <div class="intern-tag-list">
-                        ${intern.projects.map(p => `
-                            <span class="intern-project-pill" style="background: ${cc.tagBg}; color: ${cc.tagText};">
-                                ${p.tag}
-                            </span>
-                        `).join('')}
+                // Header: company + period
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'intern-card-header';
+                headerDiv.innerHTML = `
+                    <div>
+                        <p class="intern-company">${intern.company}</p>
+                        <p class="intern-role">${intern.role}</p>
                     </div>
-                    <div class="intern-card-company-preview" style="color: ${cc.tagText};">
-                        ${intern.company}
-                    </div>
+                    <span class="intern-period-tag" style="background:${cc.tagBg}; color:${cc.tagText};">
+                        ${intern.period}
+                    </span>
                 `;
-                card.appendChild(topSection);
-
-                // Bottom Section
-                const bottomSection = document.createElement('div');
-                bottomSection.className = 'intern-card-bottom';
-                
-                const header = document.createElement('div');
-                header.innerHTML = `
-                    <h3 class="intern-company">${intern.company}</h3>
-                    <p class="intern-role">${intern.role}</p>
-                `;
-                bottomSection.appendChild(header);
+                card.appendChild(headerDiv);
 
                 // Projects
-                const projectsContainer = document.createElement('div');
-                projectsContainer.className = 'intern-projects';
-                
-                intern.projects.forEach(project => {
+                const projectsDiv = document.createElement('div');
+                projectsDiv.className = 'intern-projects';
+                intern.projects.forEach(proj => {
                     const projDiv = document.createElement('div');
                     projDiv.className = 'intern-project';
                     projDiv.innerHTML = `
                         <div class="intern-project-header">
                             <div class="intern-project-title-wrap">
-                                <span class="intern-project-tag">${project.tag}</span>
-                                <h4 class="intern-project-title">${project.title}</h4>
+                                <span class="intern-project-tag" style="background:${cc.tagBg}; color:${cc.tagText};">${proj.tag}</span>
+                                <h4 class="intern-project-title">${proj.title}</h4>
                             </div>
-                            <span class="intern-project-metric">${project.metric}</span>
+                            <span class="intern-project-metric" style="color:${cc.tagText};">${proj.metric}</span>
                         </div>
-                        <p class="intern-project-desc">${project.desc}</p>
+                        <p class="intern-project-desc">${proj.desc}</p>
                     `;
-                    projectsContainer.appendChild(projDiv);
+                    projectsDiv.appendChild(projDiv);
                 });
-                bottomSection.appendChild(projectsContainer);
+                card.appendChild(projectsDiv);
 
                 // Skills
-                const skillsContainer = document.createElement('div');
-                skillsContainer.className = 'intern-skills';
+                const skillsDiv = document.createElement('div');
+                skillsDiv.className = 'intern-skills';
                 intern.skills.forEach(skill => {
-                    const skillSpan = document.createElement('span');
-                    skillSpan.className = 'intern-skill';
-                    skillSpan.textContent = skill;
-                    skillsContainer.appendChild(skillSpan);
+                    const s = document.createElement('span');
+                    s.className = 'intern-skill';
+                    s.textContent = skill;
+                    skillsDiv.appendChild(s);
                 });
-                bottomSection.appendChild(skillsContainer);
+                card.appendChild(skillsDiv);
 
-                // Actions
-                const actionsContainer = document.createElement('div');
-                actionsContainer.className = 'intern-actions';
-                
+                // Toggle button
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'intern-actions';
+
                 const toggleBtn = document.createElement('button');
                 toggleBtn.className = 'intern-btn intern-btn-outline';
-                toggleBtn.textContent = '查看项目 ↗';
+                toggleBtn.style.borderColor = cc.tagText;
+                toggleBtn.style.color = cc.tagText;
+                toggleBtn.textContent = '查看详情 ↓';
+                toggleBtn.addEventListener('mouseenter', () => toggleBtn.style.background = cc.tagBg);
+                toggleBtn.addEventListener('mouseleave', () => toggleBtn.style.background = 'transparent');
                 toggleBtn.addEventListener('click', () => {
                     card.classList.toggle('expanded');
-                    toggleBtn.textContent = card.classList.contains('expanded') ? '收起项目 ↗' : '查看项目 ↗';
+                    toggleBtn.textContent = card.classList.contains('expanded') ? '收起详情 ↑' : '查看详情 ↓';
                 });
-                
+
                 const demoBtn = document.createElement('button');
                 demoBtn.className = 'intern-btn intern-btn-filled';
                 demoBtn.textContent = '了解更多 ↗';
-                
-                actionsContainer.appendChild(toggleBtn);
-                actionsContainer.appendChild(demoBtn);
-                
-                bottomSection.appendChild(actionsContainer);
 
-                card.appendChild(bottomSection);
+                actionsDiv.appendChild(toggleBtn);
+                actionsDiv.appendChild(demoBtn);
+                card.appendChild(actionsDiv);
+
                 grid.appendChild(card);
             });
         }
 
-        renderInternshipGrid();
+        loadInternships();
 
 
         // --- 4. AI AGENT GACHA ---
@@ -2199,60 +2130,46 @@
 
 
         // --- 4.5 PORTFOLIO GRID ---
-        const projects = [
-            {
-                id: "salary",
-                title: "工资计算器",
-                subtitle: "Salary Receipt",
-                tag: "macOS App",
-                tagColor: { bg: "#E8F5E9", text: "#2E7D32" },
-                description: "菜单栏常驻工具，实时显示今日已赚金额、本月累计收入、距发薪倒计时，支持餐补/打车补贴倒计时与心愿单进度追踪。",
-                highlights: ["实时薪资滚动计算", "心愿单存钱进度", "餐补/打车倒计时"],
-                skills: ["Electron", "React", "Vite", "独立开发"],
-                previewType: "app",
-                links: [
-                    { label: "GitHub", href: "https://github.com/promise1s/salary_receipt", style: "outline" },
-                    { label: "查看演示", href: "https://github.com/promise1s/salary_receipt", style: "fill" },
-                ],
-            },
-            {
-                id: "competitive",
-                title: "OTA 酒店商家端竞品分析",
-                subtitle: "Competitive Research",
-                tag: "产品分析",
-                tagColor: { bg: "#E3F2FD", text: "#1565C0" },
-                description: "对比美团、携程、飞猪三平台商家评价管理能力，核心发现：美团技术深度最强但用户感知弱于携程，提出三项可落地的产品优化建议。",
-                highlights: [
-                    "携程「6个月无差评」提示：低成本高感知",
-                    "美团527维度观点抽取能力未在C端透出",
-                    "建议：差评处理进展更新 + 历史差评有效期机制",
-                ],
-                skills: ["竞品研究", "用户体验", "产品建议", "数据分析"],
-                previewType: "doc",
-                links: [
-                    { label: "查看报告", href: "#", style: "fill" },
-                ],
-            },
-            {
-                id: "push",
-                title: "Push 文案生成 Agent",
-                subtitle: "AI Copywriting Tool",
-                tag: "AI Demo",
-                tagColor: { bg: "#EDE7F6", text: "#4527A0" },
-                description: "基于美团实习触达策略设计的 AI Agent，构建「素材校验 → 受众确认 → 场景选择 → 风险检测」四段流程，输入用户分层场景自动生成合规 Push 文案。",
-                highlights: [
-                    "四阶段流水线生成流程",
-                    "支持普通日 / 节假日场景切换",
-                    "Style Library 管理品牌文案规范",
-                ],
-                skills: ["AI Agent", "Prompt 设计", "产品设计", "Google AI Studio"],
-                previewType: "agent",
-                links: [
-                    { label: "查看 PRD", href: "#", style: "outline" },
-                    { label: "体验 Demo（即将上线）", href: "#", style: "disabled" },
-                ],
-            },
-        ];
+        // ── Portfolio 数据从 Notion 动态加载 ──
+        const tagColorMap = {
+            green:  { bg: '#E8F5E9', text: '#2E7D32' },
+            blue:   { bg: '#E3F2FD', text: '#1565C0' },
+            purple: { bg: '#EDE7F6', text: '#4527A0' },
+        };
+
+        async function loadPortfolio() {
+            try {
+                const res  = await fetch(API_BASE + '/api/portfolio');
+                const data = await res.json();
+
+                const projects = data.map(item => {
+                    const tc = tagColorMap[item.tagColor] || tagColorMap.blue;
+                    const links = [];
+                    if (item.githubUrl) links.push({ label: 'GitHub', href: item.githubUrl, style: 'outline' });
+                    if (item.demoUrl)   links.push({ label: '查看演示', href: item.demoUrl, style: 'fill' });
+                    if (!item.githubUrl && !item.demoUrl) links.push({ label: '即将上线', href: '#', style: 'disabled' });
+
+                    return {
+                        id:          item.id,
+                        title:       item.title,
+                        subtitle:    item.subtitle,
+                        tag:         item.tagText,
+                        tagColor:    tc,
+                        description: item.description,
+                        highlights:  item.skills ? item.skills.split(',').map(s => s.trim()).filter(Boolean) : [],
+                        skills:      item.skills ? item.skills.split(',').map(s => s.trim()).filter(Boolean) : [],
+                        previewType: item.previewType || 'app',
+                        links,
+                    };
+                });
+
+                renderPortfolioGrid(projects);
+            } catch(e) {
+                console.error('Failed to load portfolio:', e);
+                renderPortfolioGrid([]);
+            }
+        }
+
 
         function getPreviewHTML(type) {
             if (type === "app") {
@@ -2331,9 +2248,13 @@
             `;
         }
 
-        function renderPortfolioGrid() {
+        function renderPortfolioGrid(projects) {
             const grid = document.getElementById('portfolio-grid');
             if (!grid) return;
+            if (!projects || projects.length === 0) {
+                grid.innerHTML = '<div style="padding:40px;text-align:center;color:#aaa;">加载中...</div>';
+                return;
+            }
 
             grid.innerHTML = projects.map(proj => `
                 <div class="portfolio-card reveal-item">
@@ -2400,7 +2321,7 @@
             });
         }
 
-        renderPortfolioGrid();
+        loadPortfolio();
 
         // --- Scroll Reveal Observer ---
         const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -2427,20 +2348,31 @@
         }
 
         // --- 6. SKILLS FLIP CARD ---
-        const tarotSkills = [
-            { id: 1, icon: "⚖️", arcana: "I",    title: "法律研究",   subtitle: "The Scholar",    desc: "熟练检索 CNKI、北大法宝、Westlaw，擅长比较法与监管文本分析" },
-            { id: 2, icon: "📝", arcana: "II",   title: "学术写作",   subtitle: "The Scribe",     desc: "中英文法学论文写作，熟悉学术规范、脚注引注格式与论证结构" },
-            { id: 3, icon: "💻", arcana: "III",  title: "前端开发",   subtitle: "The Architect",  desc: "React / Next.js / Tailwind，构建交互式个人网站与法律科技原型" },
-            { id: 4, icon: "🤖", arcana: "IV",   title: "AI 工具",    subtitle: "The Oracle",     desc: "Prompt Engineering 深度实践，Claude / GPT / Gemini 多模型协作" },
-            { id: 5, icon: "📊", arcana: "V",    title: "数据分析",   subtitle: "The Analyst",    desc: "Python pandas，法律文本量化研究、A/B 测试数据解读与可视化" },
-            { id: 6, icon: "🏦", arcana: "VI",   title: "金融监管法", subtitle: "The Regulator",  desc: "专注稳定币与 DeFi 监管框架，熟悉 FSB、BIS 等国际监管文件" },
-            { id: 7, icon: "🔍", arcana: "VII",  title: "合规审查",   subtitle: "The Inspector",  desc: "合同条款风险识别、监管文件解读、跨境合规差异比较" },
-            { id: 8, icon: "🌍", arcana: "VIII", title: "雅思 7.0",   subtitle: "The Linguist",   desc: "学术英语读写无障碍，法律英文文献精读，英中法律术语互译" },
-            { id: 9, icon: "🎨", arcana: "IX",   title: "产品设计",   subtitle: "The Visionary",  desc: "Figma 原型与交互设计，法律科技产品用户路径规划与体验优化" },
-            { id: 10, icon: "🤝", arcana: "X",   title: "项目管理",   subtitle: "The Commander",  desc: "跨团队协作统筹，实习期间主导 A/B 测试与内容分发全流程" },
-        ];
+        // ── 技能数据从 Notion 动态加载 ──
+        let tarotSkills = [];
 
-        (function initSkillsFlip() {
+        async function loadSkills() {
+            try {
+                const res  = await fetch(API_BASE + '/api/skills');
+                const data = await res.json();
+                tarotSkills = data.map(s => ({
+                    id:       s.order,
+                    icon:     s.icon,
+                    arcana:   s.arcana,
+                    title:    s.name,
+                    subtitle: s.subtitle,
+                    desc:     s.desc,
+                    color:    '#c9a84c',
+                }));
+            } catch(e) {
+                console.error('Failed to load skills:', e);
+                tarotSkills = [];
+            }
+        }
+
+
+        async function initSkillsFlip() {
+            await loadSkills();
             const flipInner  = document.getElementById('tarot-flip-inner');
             const listEl     = document.getElementById('skills-list');
             const tfArcana   = document.getElementById('tf-arcana');
