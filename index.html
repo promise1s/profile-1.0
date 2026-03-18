@@ -223,22 +223,44 @@
         }
         .hero-overlay {
             position: relative;
-            z-index: 10; /* Above Canvas */
+            z-index: 10;
             text-align: center;
-            pointer-events: none; /* Let clicks pass to physics */
+            pointer-events: none;
             padding: 40px;
-            /* text-shadow: 4px 4px 0 #FFF; Removed thick shadow for cleaner look with thin lines */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-rachel-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            font-family: var(--font-display);
+            font-size: 22vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--color-primary);
+            opacity: 0.07;
+            white-space: nowrap;
+            letter-spacing: -0.02em;
+            user-select: none;
+            pointer-events: none;
+            z-index: 0;
+            line-height: 1;
         }
         .hero-title {
             font-family: var(--font-display);
-            font-size: 4rem;
-            font-weight: 700;
+            font-size: 7rem;
+            font-weight: 900;
             color: var(--color-primary);
-            margin-bottom: 1.5rem;
+            margin: 0;
             line-height: 1.1;
-            text-transform: uppercase;
+            letter-spacing: 3.5rem;
             white-space: nowrap;
-            -webkit-text-stroke: 2px #FFFFFF;
+            position: relative;
+            z-index: 1;
         }
         @keyframes pulseText {
             0% { transform: scale(1); opacity: 1; }
@@ -247,7 +269,7 @@
         }
         .hero-subtitle {
             font-family: var(--font-display);
-            font-size: 1.2rem; 
+            font-size: 1.2rem;
             color: var(--color-primary);
             background: #FFFFFF;
             display: inline-block;
@@ -257,11 +279,15 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
             font-weight: 600;
             animation: pulseText 2s infinite;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
         }
-        
+
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
+            .hero-title { font-size: 3.5rem; letter-spacing: 1.5rem; }
             .hero-subtitle { font-size: 0.9rem; }
+            .hero-rachel-bg { font-size: 28vw; }
         }
 
         /* --- SECTION 2: INTERNSHIP EXPERIENCE --- */
@@ -1300,8 +1326,9 @@
             </nav>
 
             <div class="hero-overlay">
-                <h1 class="hero-title">邵许诺</h1>
-                <div class="hero-subtitle">立志成为产品经理的实习生</div>
+                <div class="hero-rachel-bg">RACHEL</div>
+                <h1 class="hero-title">SHAO XU NUO</h1>
+                <div class="hero-subtitle">懂运营更懂产品</div>
             </div>
             <canvas id="hero-canvas"></canvas>
         </section>
@@ -1401,7 +1428,7 @@
         <section id="summary-section" style="background-color: var(--color-bg); flex-direction: column; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--color-dot); height: 100vh; overflow-y: auto; overflow-x: hidden;">
             <div class="summary-container" style="display: flex; width: 90%; max-width: 1200px; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 40px;">
                 <div class="summary-left" style="flex: 1; min-width: 300px;">
-                    <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">目前开放PM实习机会 · 欢迎内推或coffee chat</h2>
+                    <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">寻找产品实习机会 · 随时可以开始</h2>
                     <a href="/cdn-cgi/l/email-protection#f78f9e9698858296999999b7c6c5c1d994989a" class="subscribe-btn" style="text-decoration: none; display: inline-block;"><span class="__cf_email__" data-cfemail="2b53424a44595e4a4545456b1a191d05484446">[email&#160;protected]</span></a>
                 </div>
                 <div class="summary-right" style="display: flex; gap: 60px; flex-wrap: wrap;">
@@ -1427,7 +1454,7 @@
             </div>
             
             <div class="huge-text-container" style="width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 2vh; margin-top: auto;">
-                <h1 style="font-size: min(11vw, 15vh); font-weight: 800; letter-spacing: -0.05em; color: var(--color-primary); margin: 0; line-height: 0.85; white-space: nowrap; max-width: 100%; -webkit-text-stroke: 2px #FFFFFF;">Product Manager</h1>
+                <h1 style="font-size: clamp(40px, 13.5vw, 99vw); font-weight: 800; letter-spacing: -0.03em; color: var(--color-primary); margin: 0; line-height: 0.85; white-space: nowrap; width: 100%; text-align: center; -webkit-text-stroke: 2px #FFFFFF; display: block;">Product Manager</h1>
             </div>
             
             <div class="footer-bottom" style="width: 100%; display: flex; justify-content: space-between; padding: 20px 40px; border-top: 1px solid var(--color-dot); font-size: 0.8rem; color: var(--color-secondary); font-weight: 500; text-transform: uppercase;">
@@ -1894,10 +1921,11 @@
         }
 
 
-        function renderInternshipGrid() {
+        function renderInternshipGrid(internships) {
             const grid = document.getElementById('internship-grid');
             if (!grid) return;
             grid.innerHTML = '';
+            if (!internships || internships.length === 0) return;
 
             const colorConfig = {
                 blue:   { tagBg: '#E8F0FE', tagText: '#1a4fa0' },
