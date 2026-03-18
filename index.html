@@ -1930,7 +1930,7 @@
                 // 把项目按公司名分组
                 const projByCompany = {};
                 projData.forEach(p => {
-                    const co = p.company;
+                    const co = p.company || '';
                     if (!projByCompany[co]) projByCompany[co] = [];
                     projByCompany[co].push({
                         tag:    p.tag,
@@ -1940,13 +1940,40 @@
                     });
                 });
 
+                // 如果所属公司字段全为空（Notion Relation类型导致），
+                // 按项目order字段和已知分配规则手动分配
+                const allEmpty = Object.keys(projByCompany).every(k => k === '');
+                if (allEmpty && projByCompany['']) {
+                    const allProjs = projByCompany[''];
+                    // 按简历顺序：美团4个，碳益2个，蔚来1个
+                    projByCompany['美团-大众点评笔记'] = allProjs.slice(0, 4);
+                    projByCompany['碳益科技'] = allProjs.slice(4, 6);
+                    projByCompany['蔚来汽车'] = allProjs.slice(6, 7);
+                    delete projByCompany[''];
+                }
+
+                // Fuzzy match: 项目的所属公司字段可能为空（Relation类型）
+                // 改用关键词匹配
+                function matchProjects(companyName) {
+                    // 先尝试精确匹配
+                    if (projByCompany[companyName]) return projByCompany[companyName];
+                    // 再尝试模糊匹配
+                    for (const key of Object.keys(projByCompany)) {
+                        if (key && (companyName.includes(key) || key.includes(companyName))) {
+                            return projByCompany[key];
+                        }
+                    }
+                    // 如果所属公司字段为空（Relation），按顺序分配
+                    return [];
+                }
+
                 const internships = internData.map(item => ({
                     company:  item.company,
                     role:     item.role,
                     period:   item.startDate + ' – ' + item.endDate,
                     tagColor: getTagColorByCompany(item.company),
-                    projects: projByCompany[item.company] || [],
-                    skills:   [], // 技能标签暂从项目里合并
+                    projects: matchProjects(item.company),
+                    skills:   [],
                 }));
 
                 renderInternshipGrid(internships);
@@ -2415,22 +2442,39 @@
         // ── 技能数据从 Notion 动态加载 ──
         let tarotSkills = [];
 
+        const FALLBACK_SKILLS = [
+            { id:1, icon:"⚖️", arcana:"I",    title:"法律研究",   subtitle:"The Scholar",    desc:"熟练检索 CNKI、北大法宝、Westlaw，擅长比较法与监管文本分析" },
+            { id:2, icon:"📝", arcana:"II",   title:"学术写作",   subtitle:"The Scribe",     desc:"中英文法学论文写作，熟悉学术规范、脚注引注格式与论证结构" },
+            { id:3, icon:"💻", arcana:"III",  title:"前端开发",   subtitle:"The Architect",  desc:"React / Next.js / Tailwind，构建交互式个人网站与产品原型" },
+            { id:4, icon:"🤖", arcana:"IV",   title:"AI 工具",    subtitle:"The Oracle",     desc:"Prompt Engineering 深度实践，Claude / GPT / Gemini 多模型协作" },
+            { id:5, icon:"📊", arcana:"V",    title:"数据分析",   subtitle:"The Analyst",    desc:"熟练使用 SQL 提取数据，结合 Python/Excel 进行分析与归因" },
+            { id:6, icon:"🏦", arcana:"VI",   title:"金融监管法", subtitle:"The Regulator",  desc:"专注稳定币与 DeFi 监管框架，熟悉 FSB、BIS 等国际监管文件" },
+            { id:7, icon:"🔍", arcana:"VII",  title:"合规审查",   subtitle:"The Inspector",  desc:"合同条款风险识别、监管文件解读、跨境合规差异比较" },
+            { id:8, icon:"🌍", arcana:"VIII", title:"雅思 7.0",   subtitle:"The Linguist",   desc:"学术英语读写无障碍，法律英文文献精读，英中法律术语互译" },
+            { id:9, icon:"🎨", arcana:"IX",   title:"产品设计",   subtitle:"The Visionary",  desc:"熟练使用 Figma/Axure 绘制原型，具备结构化 PRD 与业务 SOP 编写能力" },
+            { id:10,icon:"🤝", arcana:"X",    title:"项目管理",   subtitle:"The Commander",  desc:"跨团队协作统筹，实习期间主导 AB 测试与内容分发全流程" },
+        ];
+
         async function loadSkills() {
             try {
                 const res  = await fetch(API_BASE + '/api/skills');
                 const data = await res.json();
-                tarotSkills = data.map(s => ({
-                    id:       s.order,
-                    icon:     s.icon,
-                    arcana:   s.arcana,
-                    title:    s.name,
-                    subtitle: s.subtitle,
-                    desc:     s.desc,
-                    color:    '#c9a84c',
-                }));
+                if (data && data.length > 0) {
+                    tarotSkills = data.map(s => ({
+                        id:       s.order,
+                        icon:     s.icon || '✦',
+                        arcana:   s.arcana,
+                        title:    s.name,
+                        subtitle: s.subtitle,
+                        desc:     s.desc,
+                        color:    '#c9a84c',
+                    }));
+                } else {
+                    tarotSkills = FALLBACK_SKILLS;
+                }
             } catch(e) {
                 console.error('Failed to load skills:', e);
-                tarotSkills = [];
+                tarotSkills = FALLBACK_SKILLS;
             }
         }
 
