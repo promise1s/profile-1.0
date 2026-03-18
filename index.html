@@ -252,12 +252,12 @@
         }
         .hero-title {
             font-family: var(--font-display);
-            font-size: 7rem;
+            font-size: 4.5rem;
             font-weight: 900;
             color: var(--color-primary);
             margin: 0;
             line-height: 1.1;
-            letter-spacing: 3.5rem;
+            letter-spacing: 0.8rem;
             white-space: nowrap;
             position: relative;
             z-index: 1;
@@ -279,13 +279,42 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
             font-weight: 600;
             animation: pulseText 2s infinite;
-            margin-top: 3rem;
+            margin-top: 6rem;
             position: relative;
             z-index: 1;
         }
 
+        @keyframes scrollArrowFade {
+            from { opacity: 0; transform: translateY(-12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scrollArrowBounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(8px); }
+        }
+        .hero-scroll-arrow {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            animation: scrollArrowFade 1s ease 1.2s forwards,
+                       scrollArrowBounce 2s ease 2.2s infinite;
+            pointer-events: none;
+        }
+        .hero-scroll-arrow svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--color-primary);
+            opacity: 0.6;
+        }
         @media (max-width: 768px) {
-            .hero-title { font-size: 3.5rem; letter-spacing: 1.5rem; }
+            .hero-title { font-size: 2rem; letter-spacing: 0.4rem; }
             .hero-subtitle { font-size: 0.9rem; }
             .hero-rachel-bg { font-size: 28vw; }
         }
@@ -1330,6 +1359,11 @@
                 <h1 class="hero-title">SHAO XU NUO</h1>
                 <div class="hero-subtitle">懂运营更懂产品</div>
             </div>
+            <div class="hero-scroll-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
             <canvas id="hero-canvas"></canvas>
         </section>
 
@@ -1429,7 +1463,7 @@
             <div class="summary-container" style="display: flex; width: 90%; max-width: 1200px; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 40px;">
                 <div class="summary-left" style="flex: 1; min-width: 300px;">
                     <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">寻找产品实习机会 · 随时可以开始</h2>
-                    <a href="/cdn-cgi/l/email-protection#f78f9e9698858296999999b7c6c5c1d994989a" class="subscribe-btn" style="text-decoration: none; display: inline-block;"><span class="__cf_email__" data-cfemail="2b53424a44595e4a4545456b1a191d05484446">[email&#160;protected]</span></a>
+                    <a href="mailto:xiaoruannn@126.com" class="subscribe-btn" style="text-decoration: none; display: inline-block;">xiaoruannn@126.com</a>
                 </div>
                 <div class="summary-right" style="display: flex; gap: 60px; flex-wrap: wrap;">
                     <div class="summary-col">
