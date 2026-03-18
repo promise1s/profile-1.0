@@ -1463,7 +1463,7 @@
             <div class="summary-container" style="display: flex; width: 90%; max-width: 1200px; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 40px;">
                 <div class="summary-left" style="flex: 1; min-width: 300px;">
                     <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">寻找产品实习机会 · 随时可以开始</h2>
-                    <a href="/cdn-cgi/l/email-protection#81f9e8e0eef3f4e0efefefc1b0b3b7afe2eeec" class="subscribe-btn" style="text-decoration: none; display: inline-block;"><span class="__cf_email__" data-cfemail="3c44555d534e495d5252527c0d0e0a125f5351">[email&#160;protected]</span></a>
+                    <a href="mailto:xiaoruannn@126.com" class="subscribe-btn" style="text-decoration: none; display: inline-block;">xiaoruannn@126.com</a>
                 </div>
                 <div class="summary-right" style="display: flex; gap: 60px; flex-wrap: wrap;">
                     <div class="summary-col">
@@ -1626,7 +1626,7 @@
 
     <div class="toast" id="toast">邮箱地址已复制到剪贴板！</div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // --- 0. STATE MANAGEMENT ---
         const state = {
             currentSection: 0,
@@ -1643,6 +1643,7 @@
             document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
             updatePhysicsColors();
         }
+        window.toggleTheme = toggleTheme;
 
         function updatePhysicsColors() {
             if (!window.physicsShapes) return;
@@ -1686,6 +1687,7 @@
             stopGachaAnimations();
             if(index === 3) triggerSkills();
         }
+        window.scrollToSection = scrollToSection;
 
         // Nested Scroll Helper
         function handleScrollable(element, deltaY) {
@@ -2529,3 +2531,12 @@
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+    </script>
+</body>
+</html>
