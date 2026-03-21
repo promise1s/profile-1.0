@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rachel的个人主页</title>
-    <!-- Matter.js for Physics Engine -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <!-- System Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         /* 
@@ -210,113 +208,215 @@
         }
 
         /* --- SECTION 1: PHYSICS HERO --- */
-        #hero-section {
-            background-color: var(--color-bg);
-        }
-        #hero-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* Behind everything */
-        }
-        .hero-overlay {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            pointer-events: none;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .hero-rachel-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -60%);
-            font-family: var(--font-display);
-            font-size: 22vw;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1.5px var(--color-primary);
-            opacity: 0.07;
-            white-space: nowrap;
-            letter-spacing: -0.02em;
-            user-select: none;
-            pointer-events: none;
-            z-index: 0;
-            line-height: 1;
-        }
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: 4.5rem;
-            font-weight: 900;
-            color: var(--color-primary);
-            margin: 0;
-            line-height: 1.1;
-            letter-spacing: 0.8rem;
-            white-space: nowrap;
-            position: relative;
-            z-index: 1;
-        }
-        @keyframes pulseText {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .hero-subtitle {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            color: var(--color-primary);
-            background: #FFFFFF;
-            display: inline-block;
-            padding: 10px 20px;
-            border: 2px solid var(--color-primary);
-            border-radius: 30px;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
-            font-weight: 600;
-            animation: pulseText 2s infinite;
-            margin-top: 6rem;
-            position: relative;
-            z-index: 1;
+        /* ── NEW HERO SECTION ── */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+
+        :root {
+            --cream: #FAF7F2;
+            --navy: #003366;
+            --navy-light: #1a4a80;
+            --amber: #b09060;
+            --amber-warm: #b07030;
+            --text-muted: #8a8070;
+            --hero-border: #e0d8cc;
+            --font-en: 'DM Sans', sans-serif;
+            --font-zh: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
         }
 
-        @keyframes scrollArrowFade {
-            from { opacity: 0; transform: translateY(-12px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scrollArrowBounce {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(8px); }
-        }
-        .hero-scroll-arrow {
-            position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
+        #hero-section {
+            background: var(--cream) !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            gap: 4px;
-            opacity: 0;
-            animation: scrollArrowFade 1s ease 1.2s forwards,
-                       scrollArrowBounce 2s ease 2.2s infinite;
-            pointer-events: none;
+            justify-items: unset;
+            padding: 0 60px;
+            overflow: hidden;
         }
-        .hero-scroll-arrow svg {
-            width: 32px;
-            height: 32px;
-            stroke: var(--color-primary);
-            opacity: 0.6;
+
+        /* NAV override for hero */
+        .top-nav {
+            background: transparent !important;
+            transition: background 0.4s;
         }
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2rem; letter-spacing: 0.4rem; }
-            .hero-subtitle { font-size: 0.9rem; }
-            .hero-rachel-bg { font-size: 28vw; }
+        .nav-brand {
+            font-family: var(--font-en) !important;
+            font-size: 11px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.2em !important;
+            color: var(--navy) !important;
+            text-transform: uppercase;
+        }
+        .nav-pill {
+            font-family: var(--font-en) !important;
+            font-size: 11px !important;
+            color: var(--text-muted) !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase;
+            background: transparent !important;
+            border: none !important;
+            position: relative;
+            padding: 8px 4px !important;
+        }
+        .nav-pill::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--navy);
+            transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .nav-pill:hover { color: var(--navy) !important; }
+        .nav-pill:hover::after { width: 100%; }
+        .theme-toggle-btn::after { display: none !important; }
+
+        /* HERO LEFT */
+        .hero-new-left {
+            display: flex; flex-direction: column; justify-content: center;
+            height: 100%;
+            padding: 100px 0 60px;
+            z-index: 2;
+        }
+        .hero-eyebrow {
+            font-size: 10px; letter-spacing: 0.3em; color: var(--amber);
+            font-weight: 500; text-transform: uppercase; margin-bottom: 20px;
+            font-family: var(--font-en);
+        }
+        .hero-new-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(48px, 5.5vw, 76px);
+            color: var(--navy); letter-spacing: 0.08em;
+            line-height: 0.95; margin-bottom: 12px;
+        }
+        .hero-new-rachel {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px; font-weight: 300; font-style: italic;
+            color: var(--amber); letter-spacing: 0.15em; margin-bottom: 32px;
+        }
+        .hero-new-tagline {
+            font-size: 13px; color: var(--text-muted);
+            line-height: 2.2; margin-bottom: 36px; font-weight: 300;
+            font-family: var(--font-en);
+        }
+        .hero-new-cta { display: flex; gap: 12px; margin-bottom: 48px; }
+        .hero-btn-p {
+            padding: 12px 28px; background: var(--navy); color: #fff;
+            font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+            text-transform: uppercase; border: none; border-radius: 2px;
+            cursor: pointer; transition: background 0.2s;
+            font-family: var(--font-en);
+        }
+        .hero-btn-p:hover { background: var(--navy-light); }
+        .hero-btn-o {
+            padding: 12px 28px; background: transparent; color: var(--navy);
+            font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+            text-transform: uppercase; border: 1px solid var(--navy);
+            border-radius: 2px; cursor: pointer; transition: all 0.2s;
+            font-family: var(--font-en);
+        }
+        .hero-btn-o:hover { background: var(--navy); color: #fff; }
+        .hero-new-stats {
+            display: flex; gap: 32px;
+            padding-top: 24px; border-top: 0.5px solid var(--hero-border);
+        }
+        .hero-stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 26px; color: var(--navy);
+            letter-spacing: 0.05em; line-height: 1;
+        }
+        .hero-stat-label {
+            font-size: 10px; color: var(--text-muted);
+            letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase;
+            font-family: var(--font-en);
+        }
+
+        /* HERO RIGHT / PHOTO STACK */
+        .hero-new-right {
+            display: flex; align-items: center; justify-content: center;
+            height: 100%; z-index: 2;
+        }
+        .stack-wrap { position: relative; }
+        .stack-scene {
+            position: relative; width: 280px; height: 360px; cursor: pointer;
+        }
+        .stack-card {
+            position: absolute; width: 225px; height: 300px;
+            border-radius: 20px; overflow: hidden;
+            transform-origin: bottom center;
+            user-select: none; will-change: transform, opacity;
+        }
+        .stack-card img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block; pointer-events: none;
+        }
+        .stack-card-placeholder {
+            width: 100%; height: 100%;
+            background: var(--hero-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; color: var(--text-muted);
+            letter-spacing: 0.1em;
+        }
+        .stack-card[data-depth="2"] {
+            top: 0; left: 28px; z-index: 3;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.13);
+            transform: rotate(-1deg);
+            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94),
+                        box-shadow 0.7s ease, z-index 0s 0.42s;
+        }
+        .stack-card[data-depth="1"] {
+            top: 18px; left: 14px; z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+            transform: rotate(-5deg);
+            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94) 0.08s,
+                        box-shadow 0.7s ease, z-index 0s 0.42s;
+        }
+        .stack-card[data-depth="0"] {
+            top: 34px; left: 0px; z-index: 1;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            transform: rotate(-9deg);
+            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94) 0.16s,
+                        box-shadow 0.7s ease, z-index 0s 0.42s;
+        }
+        .stack-scene:hover .stack-card[data-depth="2"] {
+            transform: rotate(2deg) translate(14px, -4px);
+            box-shadow: 0 18px 48px rgba(0,0,0,0.15);
+        }
+        .stack-scene:hover .stack-card[data-depth="1"] {
+            transform: rotate(-4deg) translate(0px, -6px);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.12);
+        }
+        .stack-scene:hover .stack-card[data-depth="0"] {
+            transform: rotate(-10deg) translate(-14px, 0px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.09);
+        }
+        .stack-scene.lock-hover:hover .stack-card[data-depth="2"] { transform: rotate(-1deg); }
+        .stack-scene.lock-hover:hover .stack-card[data-depth="1"] { transform: rotate(-5deg); }
+        .stack-scene.lock-hover:hover .stack-card[data-depth="0"] { transform: rotate(-9deg); }
+        .stack-hint {
+            margin-top: 18px; text-align: center;
+            font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--text-muted); pointer-events: none;
+            opacity: 0; transition: opacity 0.3s ease;
+            font-family: var(--font-zh);
+        }
+        .hero-bg-ghost {
+            position: absolute; bottom: -40px; right: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 180px; color: transparent;
+            -webkit-text-stroke: 1px rgba(0,51,102,0.05);
+            letter-spacing: -8px;
+            user-select: none; pointer-events: none; line-height: 1;
+        }
+        /* Loading skeleton for photos */
+        @keyframes heroShimmer {
+            0% { background-position: -400px 0; }
+            100% { background-position: 400px 0; }
+        }
+        .photo-skeleton {
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, #ede8e0 25%, #f5f2ee 50%, #ede8e0 75%);
+            background-size: 400px 100%;
+            animation: heroShimmer 1.4s infinite linear;
         }
 
         /* --- SECTION 2: INTERNSHIP EXPERIENCE --- */
@@ -1335,18 +1435,15 @@
     <!-- Scroll Container -->
     <div id="app-container">
 
-        <!-- SECTION 1: PHYSICS HERO -->
+        <!-- SECTION 1: NEW HERO -->
         <section id="hero-section">
-            <!-- Top Navigation (Google Labs Style) -->
+            <!-- Top Navigation -->
             <nav class="top-nav">
-                <div class="nav-brand">
-                    <span>⚗️</span> RACHEL Portfolio
-                </div>
+                <div class="nav-brand">Rachel Portfolio</div>
                 <div class="nav-menu">
-                    <button class="nav-pill" onclick="scrollToSection(0)">首页</button>
-                    <button class="nav-pill" onclick="scrollToSection(1)">实习经历</button>
-                    <button class="nav-pill" onclick="scrollToSection(2)">Portfolio</button>
-                    <button class="nav-pill" onclick="scrollToSection(3)">专业技能</button>
+                    <button class="nav-pill" onclick="scrollToSection(1)">INTERNSHIP</button>
+                    <button class="nav-pill" onclick="scrollToSection(2)">PORTFOLIO</button>
+                    <button class="nav-pill" onclick="scrollToSection(3)">SKILLS</button>
                     <button class="nav-pill theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
                         <span class="icon-sun">☀️</span>
                         <span class="icon-moon">🌙</span>
@@ -1354,17 +1451,58 @@
                 </div>
             </nav>
 
-            <div class="hero-overlay">
-                <div class="hero-rachel-bg">RACHEL</div>
-                <h1 class="hero-title">SHAO XU NUO</h1>
-                <div class="hero-subtitle">懂运营更懂产品</div>
+            <!-- LEFT: Text -->
+            <div class="hero-new-left">
+                <div class="hero-eyebrow">Product · Operations · AI</div>
+                <div class="hero-new-name">SHAO<br>XU NUO</div>
+                <div class="hero-new-rachel">Rachel</div>
+                <div class="hero-new-tagline">
+                    <strong style="font-family:var(--font-zh);color:#003366">爱玩 AI</strong> ·
+                    <span style="font-family:var(--font-zh);color:#b09060">懂运营</span><br>
+                    <span style="font-family:var(--font-zh);color:#b07030;font-weight:300">法学生</span> ·
+                    <strong style="font-family:var(--font-zh);color:#003366">喜欢想产品</strong>
+                </div>
+                <div class="hero-new-cta">
+                    <button class="hero-btn-p" onclick="scrollToSection(1)">LEARN MORE</button>
+                    <button class="hero-btn-o" onclick="scrollToSection(4)">CONTACT ME</button>
+                </div>
+                <div class="hero-new-stats">
+                    <div>
+                        <div class="hero-stat-num">3</div>
+                        <div class="hero-stat-label" style="font-family:var(--font-zh)">段实习经历</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">7</div>
+                        <div class="hero-stat-label">IELTS</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">AI</div>
+                        <div class="hero-stat-label">Claude / OpenClaw</div>
+                    </div>
+                </div>
             </div>
-            <div class="hero-scroll-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
+
+            <!-- RIGHT: Photo Stack -->
+            <div class="hero-new-right">
+                <div class="stack-wrap">
+                    <div class="stack-scene" id="stackScene">
+                        <!-- Photos loaded from Notion via JS -->
+                        <div class="stack-card" data-depth="0">
+                            <div class="photo-skeleton" id="photo-skeleton-0"></div>
+                        </div>
+                        <div class="stack-card" data-depth="1">
+                            <div class="photo-skeleton" id="photo-skeleton-1"></div>
+                        </div>
+                        <div class="stack-card" data-depth="2">
+                            <div class="photo-skeleton" id="photo-skeleton-2"></div>
+                        </div>
+                    </div>
+                    <div class="stack-hint" id="stackHint">点击切换照片</div>
+                </div>
             </div>
-            <canvas id="hero-canvas"></canvas>
+
+            <!-- Ghost BG text -->
+            <div class="hero-bg-ghost">RACHEL</div>
         </section>
 
         <!-- SECTION 2: INTERNSHIP EXPERIENCE -->
@@ -1459,11 +1597,11 @@
         </section>
 
         <!-- SECTION 5: SUMMARY & HUGE TEXT -->
-        <section id="summary-section" style="background-color: var(--color-bg); flex-direction: column; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--color-dot); height: 100vh; overflow-y: auto; overflow-x: hidden;">
+        <section id="summary-section" id="footer" style="background-color: var(--color-bg); flex-direction: column; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--color-dot); height: 100vh; overflow-y: auto; overflow-x: hidden;">
             <div class="summary-container" style="display: flex; width: 90%; max-width: 1200px; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 40px;">
                 <div class="summary-left" style="flex: 1; min-width: 300px;">
                     <h2 style="font-size: 2.5rem; color: var(--color-text-main); margin-bottom: 20px; font-weight: 700; line-height: 1.2;">寻找产品实习机会 · 随时可以开始</h2>
-                    <a href="mailto:xiaoruannn@126.com" class="subscribe-btn" style="text-decoration: none; display: inline-block;">xiaoruannn@126.com</a>
+                    <a href="/cdn-cgi/l/email-protection#69110008061b1c0807070729585b5f470a0604" class="subscribe-btn" style="text-decoration: none; display: inline-block;"><span class="__cf_email__" data-cfemail="334b5a525c4146525d5d5d730201051d505c5e">[email&#160;protected]</span></a>
                 </div>
                 <div class="summary-right" style="display: flex; gap: 60px; flex-wrap: wrap;">
                     <div class="summary-col">
@@ -1626,7 +1764,7 @@
 
     <div class="toast" id="toast">邮箱地址已复制到剪贴板！</div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // --- 0. STATE MANAGEMENT ---
         const state = {
             currentSection: 0,
@@ -1747,168 +1885,76 @@
         });
 
 
-        // --- 2. PHYSICS HERO (Matter.js - Updated for Pixel Art Style) ---
-        function initPhysics() {
-            const Engine = Matter.Engine,
-                  Render = Matter.Render,
-                  Runner = Matter.Runner,
-                  World = Matter.World,
-                  Bodies = Matter.Bodies,
-                  Mouse = Matter.Mouse,
-                  MouseConstraint = Matter.MouseConstraint,
-                  Events = Matter.Events,
-                  Common = Matter.Common;
 
-            const engine = Engine.create();
-            window.physicsEngine = engine; // Expose for theme toggle
-            const render = Render.create({
-                element: document.getElementById('hero-section'),
-                canvas: document.getElementById('hero-canvas'),
-                engine: engine,
-                options: {
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                    background: 'transparent',
-                    wireframes: false,
-                    pixelRatio: window.devicePixelRatio
+        // --- 2. HERO PHOTO STACK ---
+        // ── 从 Notion API 动态加载照片 ──
+        (function() {
+            const scene = document.getElementById('stackScene');
+            const hint  = document.getElementById('stackHint');
+            if (!scene) return;
+
+            // ── 加载照片 ──
+            async function loadHeroPhotos() {
+                try {
+                    const res  = await fetch(API_BASE + '/api/photos');
+                    const data = await res.json();
+                    if (!data || data.length === 0) return;
+
+                    // 取前三张，按排序
+                    const photos = data.slice(0, 3);
+                    const cards  = [...scene.querySelectorAll('.stack-card')];
+
+                    cards.forEach((card, i) => {
+                        const photo = photos[i];
+                        if (!photo) return;
+                        // 清空 skeleton，插入真实图片
+                        card.innerHTML = '';
+                        const img = document.createElement('img');
+                        img.src = photo.url;
+                        img.alt = photo.title || '';
+                        img.draggable = false;
+                        img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center top;display:block;pointer-events:none;';
+                        card.appendChild(img);
+                    });
+                } catch(e) {
+                    console.warn('Hero photos load failed, skipping:', e);
                 }
+            }
+            loadHeroPhotos();
+
+            // ── 交互逻辑 ──
+            let busy = false;
+
+            scene.addEventListener('mouseenter', () => {
+                scene.classList.remove('lock-hover');
+                hint.style.opacity = '1';
+            });
+            scene.addEventListener('mouseleave', () => {
+                hint.style.opacity = '0';
+                scene.classList.remove('lock-hover');
             });
 
-            // Boundaries
-            const wallOptions = { isStatic: true, render: { visible: false } };
-            const walls = [
-                Bodies.rectangle(window.innerWidth/2, window.innerHeight+60, window.innerWidth, 120, wallOptions),
-                Bodies.rectangle(-60, window.innerHeight/2, 120, window.innerHeight*2, wallOptions),
-                Bodies.rectangle(window.innerWidth+60, window.innerHeight/2, 120, window.innerHeight*2, wallOptions)
-            ];
-            World.add(engine.world, walls);
-
-            // Shape Generators
-            // Colors: Navy, Yellow, Steel Blue, Gray, Black (High Contrast)
-            const colors = ['#FFCC66', '#003366', '#336699', '#E0E0E0', '#1A2026'];
-            const allLabels = ["passion", "enthusiastic", "patient", "positive", "reliable", "steady", "intelligent"];
-            // 每次随机选3个不重复
-            const shuffled = allLabels.sort(() => Math.random() - 0.5);
-            const labels = shuffled.slice(0, 3);
-            const shapes = [];
-            window.physicsShapes = shapes; // Expose for theme toggle
-            
-            // 1. Text Pills (Labels) - Rounded as requested
-            // Removed Stroke, kept Chamfer
-            for(let i = 0; i < 3; i++) {
-                const label = labels[i % labels.length];
-                const width = 260 + label.length * 15; 
-                const height = 60;
-                const x = window.innerWidth / 2 + (Math.random() - 0.5) * 300;
-                const y = -Math.random() * 500 - 100;
-
-                const pill = Bodies.rectangle(x, y, width, height, {
-                    chamfer: { radius: 30 }, 
-                    render: { 
-                        fillStyle: i % 2 === 0 ? '#FFCC66' : '#E0E0E0', 
-                        strokeStyle: 'transparent', // NO STROKE
-                    },
-                    restitution: 0.5,
-                    friction: 0.1,
-                    plugin: { 
-                        text: label,
-                        textColor: '#003366'
-                    }
-                });
-                shapes.push(pill);
+            function getCards() {
+                const all = [...scene.querySelectorAll('.stack-card')];
+                return [0,1,2].map(d => all.find(c => parseInt(c.dataset.depth) === d));
             }
 
-            // 2. Large Geometric Shapes - Sharp Corners (except Circle)
-            // Added Triangle
-            for(let i = 0; i < 5; i++) {
-                const x = Math.random() * (window.innerWidth - 200) + 100;
-                const y = -Math.random() * 1000 - 500;
-                const size = 120 + Math.random() * 100; 
-                const color = colors[i % colors.length];
-
-                let body;
-                const type = Math.random();
-
-                if(type > 0.75) {
-                    // Triangle (Sharp, 3 sides)
-                    // Matter.js polygon: sides=3
-                    body = Bodies.polygon(x, y, 3, size, {
-                        render: { fillStyle: color, strokeStyle: 'transparent' },
-                        restitution: 0.6
-                    });
-                } else if (type > 0.5) {
-                    // Box/Square (Sharp, No Chamfer)
-                    body = Bodies.rectangle(x, y, size, size, {
-                        render: { fillStyle: color, strokeStyle: 'transparent' },
-                        restitution: 0.6
-                    });
-                } else if (type > 0.25) {
-                    // Circle (Round)
-                    body = Bodies.circle(x, y, size/1.8, {
-                        render: { fillStyle: color, strokeStyle: 'transparent' },
-                        restitution: 0.7
-                    });
-                } else {
-                    // Hexagon/Pentagon (Sharp)
-                    body = Bodies.polygon(x, y, Math.floor(Math.random()*2)+5, size/1.6, {
-                        render: { fillStyle: color, strokeStyle: 'transparent' },
-                        restitution: 0.5
-                    });
-                }
-                shapes.push(body);
-            }
-            World.add(engine.world, shapes);
-
-            // Custom Renderer for Text on Pills using Pixel Font
-            Events.on(render, 'afterRender', function() {
-                const context = render.context;
-                // Use SF Pro Text for the physics labels
-                context.font = "700 20px 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif";
-                context.textAlign = "center";
-                context.textBaseline = "middle";
-
-                shapes.forEach(body => {
-                    if (body.plugin && body.plugin.text) {
-                        const { x, y } = body.position;
-                        context.save();
-                        context.translate(x, y);
-                        context.rotate(body.angle);
-                        context.fillStyle = body.plugin.textColor;
-                        context.fillText(body.plugin.text, 0, 2); // adjust y slightly for font baseline
-                        context.restore();
-                    }
-                });
+            scene.addEventListener('click', () => {
+                if (busy) return;
+                busy = true;
+                scene.classList.add('lock-hover');
+                const [d0, d1, d2] = getCards();
+                d2.dataset.depth = '0';
+                d1.dataset.depth = '2';
+                d0.dataset.depth = '1';
+                setTimeout(() => { busy = false; }, 900);
             });
-
-            const mouse = Mouse.create(render.canvas);
-            const mConstraint = MouseConstraint.create(engine, {
-                mouse: mouse,
-                constraint: { stiffness: 0.2, render: { visible: false } }
-            });
-            World.add(engine.world, mConstraint);
-            render.mouse = mouse;
-
-            const runner = Runner.create();
-            Runner.run(runner, engine);
-            Render.run(render);
-
-            window.addEventListener('resize', () => {
-                render.canvas.width = window.innerWidth;
-                render.canvas.height = window.innerHeight;
-                render.options.width = window.innerWidth;
-                render.options.height = window.innerHeight;
-                
-                // Update wall positions on resize
-                Matter.Body.setPosition(walls[0], { x: window.innerWidth/2, y: window.innerHeight+60 });
-                Matter.Body.setPosition(walls[1], { x: -60, y: window.innerHeight/2 });
-                Matter.Body.setPosition(walls[2], { x: window.innerWidth+60, y: window.innerHeight/2 });
-            });
-        }
-        initPhysics();
+        })();
 
 
         // --- 3. INTERNSHIP HANDBOOK ---
         // ── 从 Notion API 动态获取实习数据 ──
+        // ── /api/photos 也由同一个 Worker 提供，DB_ID 在 Worker 里配置 ──
         const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
 
         // tagColor 映射
@@ -2075,7 +2121,6 @@
         }
 
         loadInternships();
-        initSkillsFlip(); 
 
 
         // --- 4. AI AGENT GACHA ---
@@ -2575,8 +2620,10 @@
                 confetti.className = 'confetti-piece';
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's'
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.width = (Math.random() * 8 + 4) + 'px';
+                confetti.style.height = confetti.style.width;
                 document.body.appendChild(confetti);
                 setTimeout(() => confetti.remove(), 5000);
             }
