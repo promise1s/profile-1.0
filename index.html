@@ -1888,6 +1888,8 @@
 
         // --- 2. HERO PHOTO STACK ---
         // ── 从 Notion API 动态加载照片 ──
+        const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
+
         (function() {
             const scene = document.getElementById('stackScene');
             const hint  = document.getElementById('stackHint');
@@ -1955,8 +1957,6 @@
         // --- 3. INTERNSHIP HANDBOOK ---
         // ── 从 Notion API 动态获取实习数据 ──
         // ── /api/photos 也由同一个 Worker 提供，DB_ID 在 Worker 里配置 ──
-        const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
-
         // tagColor 映射
         function getTagColorByCompany(company) {
             if (company.includes('美团')) return 'blue';
