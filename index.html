@@ -405,202 +405,124 @@
             animation: heroShimmer 1.4s infinite linear;
         }
 
-        /* --- SECTION 2: INTERNSHIP EXPERIENCE --- */
+        /* ── INTERNSHIP TIMELINE ── */
         #internship-section {
             background-color: var(--color-bg);
             background-image: radial-gradient(var(--color-dot) 2px, transparent 2px);
             background-size: 24px 24px;
-            padding: 20px 40px 20px 40px;
+            padding: 48px 72px 40px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: flex-start;
             height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         .internship-header {
-            width: 100%;
-            max-width: 1100px;
-            margin-bottom: 40px;
-            text-align: left;
+            width: 100%; max-width: 860px; margin-bottom: 36px;
         }
         .internship-subtitle {
-            font-size: 12px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--color-secondary);
-            margin: 0 0 8px;
+            font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--color-secondary); margin: 0 0 6px;
             font-family: var(--font-display);
         }
         .internship-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin: 0;
-            letter-spacing: -0.02em;
-            font-family: var(--font-display);
-        }
-        .internship-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 20px;
-        }
-        .intern-card {
-            background: #FFFFFF;
-            border: 1px solid var(--color-dot);
-            border-radius: 14px;
-            padding: 22px 22px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transition: box-shadow 0.2s ease;
-        }
-        .intern-card:hover {
-            box-shadow: 0 4px 20px rgba(0,51,102,0.08);
-        }
-        .intern-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .intern-company {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin: 0 0 4px;
-            font-family: var(--font-display);
-        }
-        .intern-role {
-            font-size: 13px;
-            color: var(--color-text-main);
-            margin: 0;
-            opacity: 0.7;
-        }
-        .intern-period-tag {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            white-space: nowrap;
-            flex-shrink: 0;
-            font-weight: 500;
-            margin-left: 8px;
-            font-family: var(--font-display);
-        }
-        .intern-projects {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-top: 1px solid var(--color-dot);
-            padding-top: 14px;
-        }
-        .intern-project {
-            background: var(--color-bg);
-            border-radius: 10px;
-            padding: 10px 13px;
-            border: 1px solid var(--color-dot);
-        }
-        .intern-project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0;
-        }
-        .intern-project-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            flex: 1;
-            min-width: 0;
-        }
-        .intern-project-tag {
-            font-size: 10px;
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-weight: 600;
-            white-space: nowrap;
-            flex-shrink: 0;
-            letter-spacing: 0.05em;
-        }
-        .intern-project-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--color-text-main);
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .intern-project-metric {
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-        .intern-project-desc {
-            font-size: 12px;
-            color: var(--color-text-main);
-            margin: 0;
-            line-height: 1.7;
-            opacity: 0.75;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease, margin-top 0.35s ease;
-        }
-        .intern-card.expanded .intern-project-desc {
-            max-height: 120px;
-            margin-top: 8px;
-        }
-        .intern-skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .intern-skill {
-            font-size: 11px;
-            color: var(--color-text-main);
-            border: 1px solid var(--color-dot);
-            border-radius: 6px;
-            padding: 2px 9px;
-            background: #FFFFFF;
-            opacity: 0.8;
-        }
-        .intern-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 4px;
-        }
-        .intern-btn {
-            flex: 1;
-            padding: 8px 0;
-            text-align: center;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            border: none;
-            font-family: var(--font-display);
-            letter-spacing: 0.03em;
-        }
-        .intern-btn-outline {
-            background: transparent;
-            border: 1px solid;
-        }
-        .intern-btn-filled {
-            background: rgba(0,51,102,0.05);
-            color: var(--color-primary);
-            border: 1px solid var(--color-dot);
-        }
-        .intern-btn-filled:hover {
-            background: rgba(0,51,102,0.1);
+            font-size: 32px; font-weight: 700; color: var(--color-primary);
+            margin: 0; letter-spacing: -0.02em; font-family: var(--font-display);
         }
 
-                /* --- SECTION 3: PORTFOLIO --- */
+        /* Timeline container */
+        .tl-wrap {
+            position: relative; width: 100%; max-width: 860px;
+            padding-left: 32px;
+        }
+        .tl-wrap::before {
+            content: ''; position: absolute; left: 7px; top: 6px; bottom: 0;
+            width: 1px; background: #e0d8cc;
+            transform: scaleY(0); transform-origin: top;
+            transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
+        }
+        .tl-wrap.line-in::before { transform: scaleY(1); }
+
+        /* Each timeline entry */
+        .tl-entry { position: relative; margin-bottom: 36px; }
+        .tl-dot {
+            position: absolute; left: -28px; top: 5px;
+            width: 10px; height: 10px; border-radius: 50%;
+            border: 2px solid #fff;
+            opacity: 0; transform: scale(0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .tl-entry.tl-in .tl-dot { opacity: 1; transform: scale(1); }
+
+        /* Word reveal targets */
+        .tl-word {
+            display: inline-block; opacity: 0; transform: translateY(28px);
+            transition: opacity 0.46s cubic-bezier(0.22,1,0.36,1),
+                        transform 0.46s cubic-bezier(0.22,1,0.36,1);
+        }
+        .tl-entry.tl-in .tl-word { opacity: 1; transform: translateY(0); }
+
+        .tl-date {
+            font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+            margin-bottom: 4px; font-family: var(--font-display);
+        }
+        .tl-company {
+            font-size: 18px; font-weight: 700; color: var(--color-primary);
+            margin-bottom: 2px; font-family: var(--font-display);
+            display: block;
+        }
+        .tl-role {
+            font-size: 13px; color: var(--color-text-main); opacity: 0.65;
+            margin-bottom: 12px; display: block;
+        }
+
+        /* Tag pills */
+        .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .tl-tag {
+            font-size: 11px; padding: 3px 10px; border-radius: 20px;
+            border: 0.5px solid #e0d8cc; color: #5a5a7a; background: #fff;
+            white-space: nowrap;
+        }
+
+        /* Expandable detail */
+        .tl-detail {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1),
+                        opacity 0.38s ease;
+            opacity: 0;
+        }
+        .tl-detail.open { max-height: 600px; opacity: 1; }
+        .tl-detail-inner {
+            padding: 14px 0 4px;
+            border-top: 0.5px solid #e8e0d4;
+            margin-top: 10px;
+        }
+        .tl-proj {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 8px 0; border-bottom: 0.5px solid #f0ece6;
+        }
+        .tl-proj:last-child { border-bottom: none; }
+        .tl-proj-name { font-size: 13px; font-weight: 500; color: var(--color-primary); }
+        .tl-proj-desc { font-size: 12px; color: #8a8070; line-height: 1.6; margin-top: 3px; }
+        .tl-proj-metric { font-size: 11px; font-weight: 600; white-space: nowrap; margin-left: 16px; }
+
+        /* Toggle button */
+        .tl-toggle {
+            margin-top: 10px; font-size: 11px; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 5px 14px;
+            border-radius: 3px; border: 0.5px solid currentColor;
+            background: transparent; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tl-toggle:hover { background: rgba(0,51,102,0.06); }
+
+        .tl-divider {
+            height: 0.5px; background: #e8e0d4; margin: 0 0 24px;
+        }
+
+        /* --- SECTION 3: PORTFOLIO --- */
         #portfolio-section {
             background: var(--color-bg);
             border-top: 1px solid var(--color-dot);
@@ -1621,13 +1543,13 @@
             <div class="hero-bg-ghost">RACHEL</div>
         </section>
 
-        <!-- SECTION 2: INTERNSHIP EXPERIENCE -->
+        <!-- SECTION 2: INTERNSHIP TIMELINE -->
         <section id="internship-section">
             <div class="internship-header">
                 <p class="internship-subtitle">Work Experience</p>
-                <h2 class="internship-title">实习经历</h2>
+                <h2 class="internship-title">经历</h2>
             </div>
-            <div class="internship-grid" id="internship-grid">
+            <div class="tl-wrap" id="internship-timeline">
                 <!-- Rendered by JS -->
             </div>
         </section>
@@ -1936,32 +1858,68 @@
             if (index < 0 || index >= state.totalSections) return;
             if (irisLocked) return;
             if (index === state.currentSection) return;
+
+            const fromIndex    = state.currentSection;
+            const heroInvolved = (fromIndex === 0 || index === 0);
             irisLocked = true;
 
-            // Phase 1: iris expands (navy circle grows from centre)
-            irisOverlay.classList.remove('collapse');
-            irisOverlay.classList.add('expand');
+            if (heroInvolved) {
+                // ── Iris Reveal (hero ↔ any page) ──────────────────────────
+                irisOverlay.classList.remove('collapse');
+                irisOverlay.classList.add('expand');
 
-            setTimeout(() => {
-                // Page switch happens while iris is fully closed
-                state.currentSection = index;
+                setTimeout(() => {
+                    state.currentSection = index;
+                    appContainer.style.transition = 'none';
+                    appContainer.style.transform  = `translateY(-${index * 100}vh)`;
+                    navDots.forEach((d, i) => d.classList.toggle('active', i === index));
+                    stopGachaAnimations();
+                    if (index === 3) triggerSkills();
+
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        irisOverlay.classList.remove('expand');
+                        irisOverlay.classList.add('collapse');
+                        setTimeout(() => {
+                            irisLocked = false;
+                            appContainer.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
+                        }, 420);
+                    }));
+                }, 400);
+
+            } else {
+                // ── Crossfade Dissolve (non-hero page transitions) ──────────
+                const sections  = document.querySelectorAll('#app-container > section');
+                const fromEl    = sections[fromIndex];
+                const toEl      = sections[index];
+
+                // Step 1: prepare incoming page — invisible but in place
+                toEl.style.transition = 'none';
+                toEl.style.opacity    = '0';
+
+                // Step 2: jump container to new position (toEl transparent, no flash)
                 appContainer.style.transition = 'none';
-                appContainer.style.transform = `translateY(-${index * 100}vh)`;
+                appContainer.style.transform  = `translateY(-${index * 100}vh)`;
+                state.currentSection = index;
                 navDots.forEach((d, i) => d.classList.toggle('active', i === index));
                 stopGachaAnimations();
                 if (index === 3) triggerSkills();
 
-                // Phase 2: iris collapses revealing new page
+                // Step 3: crossfade — fade out old (now off-screen), fade in new simultaneously
                 requestAnimationFrame(() => requestAnimationFrame(() => {
-                    irisOverlay.classList.remove('expand');
-                    irisOverlay.classList.add('collapse');
+                    fromEl.style.transition = 'opacity 0.36s ease';
+                    fromEl.style.opacity    = '0';
+                    toEl.style.transition   = 'opacity 0.36s ease';
+                    toEl.style.opacity      = '1';
+
                     setTimeout(() => {
+                        // Restore off-screen page opacity silently
+                        fromEl.style.transition = 'none';
+                        fromEl.style.opacity    = '1';
                         irisLocked = false;
-                        // restore smooth transition for wheel scroll
                         appContainer.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
-                    }, 420);
+                    }, 400);
                 }));
-            }, 400);
+            }
         }
         window.scrollToSection = scrollToSection;
 
@@ -2019,7 +1977,63 @@
 
 
         // --- 2. HERO PHOTO STACK (scatter entry + float orbit + 3-phase click cycle) ---
-        const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
+        // ── STATIC DATA (replaces Notion API calls) ──────────────────────────
+        const STATIC_PHOTOS = [
+            { url: 'IMG_6349.jpeg', title: '' },
+            { url: 'IMG_5849.jpeg', title: '' },
+            { url: 'IMG_0635.jpeg', title: '' },
+            { url: 'IMG_5476.jpeg', title: '' },
+        ];
+
+        const STATIC_INTERNSHIPS = [
+            { company: '美团-大众点评笔记', role: 'Push用户运营实习生', startDate: '2025.12', endDate: '2026.03' },
+            { company: '碳益科技',          role: '产品实习生',         startDate: '2025.07', endDate: '2025.11' },
+            { company: '蔚来汽车',          role: '产品运营实习生',     startDate: '2025.02', endDate: '2025.06' },
+        ];
+
+        const STATIC_INTERNSHIP_PROJECTS = [
+            { company: '美团-大众点评笔记', tag: '触达策略', name: '分层触达策略', description: '针对Push UVCTR偏低问题，数据分析发现可细分人群触达，利用人群与承接机制匹配，设计多周期AB测试验证（千万级样本），周均UVCTR从0.35%提升至0.59%。', metric: '+0.24pp UVCTR' },
+            { company: '美团-大众点评笔记', tag: '产品优化', name: 'POI匹配策略',  description: '针对奶茶类笔记转化率偏低问题，模拟用户下单路径发现下单路径长，设计承接结构AB实验验证扩大POI覆盖方案，识别根因后对接产品部门推进需求上线内测。', metric: '需求上线内测' },
+            { company: '美团-大众点评笔记', tag: 'AI Agent', name: '文案优化策略', description: '针对文案依赖人工ROI偏低问题，独立设计文案生成AI Agent，构建「受众确认—场景选择—风险检测」结构化流程，经验证识别算力为落地瓶颈，输出迭代方向建议。', metric: '可行性验证完成' },
+            { company: '美团-大众点评笔记', tag: '竞品研究', name: '竞品调研',      description: '针对大众点评酒店评价体系产品化支持需求，独立完成行业竞品调研，分析美团、携程、飞猪等平台商家评价产品发展策略与体验差异，输出调研报告。', metric: '报告已输出' },
+            { company: '碳益科技',          tag: '评分机制', name: '评分策略',      description: '发现0/1二元评分导致供应商及格率偏低、审核成本高，引入0.5分评分标准，在300家供应商中进行对照实验，供应商及格率由30%提升至60%，审核周期缩短30%。', metric: '及格率+30pp 审核周期-30%' },
+            { company: '碳益科技',          tag: '功能优化', name: '曝光策略',      description: '收集用户反馈发现核心功能使用率偏低，拆解功能使用完整路径，识别入口曝光不足的阻力，分渠道设计AB实验，验证后上线经优化入口，功能完成率提升15%。', metric: '完成率+15%' },
+            { company: '蔚来汽车',          tag: '系统优化', name: '合同系统优化',  description: '针对智能合同系统稳定性不足问题，发现大模型识别异常导致合同生成成功率仅30%，执行异常场景覆盖测试并输出问题清单，协同研发、运营团队修复与线上复核，合同生成成功率提升至50%。', metric: '成功率30%→50%' },
+        ];
+
+        const STATIC_PORTFOLIO = [
+            {
+                id: '1', title: '工资计算器', subtitle: 'Salary Receipt',
+                tagText: 'macOS App', tagColor: 'green', previewType: 'app',
+                description: '菜单栏常驻工具，实时显示今日已赚金额、本月累计收入、距发薪倒计时，支持餐补/打车补贴倒计时与心愿单进度追踪。部署上线后经20名用户完成访谈验证。',
+                skills: '竞品调研,vibe coding,独立部署,用户访谈',
+                githubUrl: 'https://github.com/promise1s/profile-1.0', demoUrl: '',
+            },
+            {
+                id: '2', title: 'OTA酒店商家端竞品分析', subtitle: 'Competitive Research',
+                tagText: '产品分析', tagColor: 'blue', previewType: 'doc',
+                description: '对比美团、携程、飞猪三平台商家评价管理能力。核心发现：美团技术深度最强但用户感知弱于携程，提出三项可落地的产品优化建议。',
+                skills: '竞品研究',
+                githubUrl: '', demoUrl: '',
+            },
+            {
+                id: '3', title: 'Push文案生成Agent', subtitle: 'AI Copywriting Tool',
+                tagText: 'AI Demo', tagColor: 'purple', previewType: 'agent',
+                description: '基于美团实习触达策略设计的AI Agent，构建「受众确认—场景选择—风险检测」结构化流程，输入用户分层场景自动生成合规Push文案。',
+                skills: 'AI Agent,Prompt设计,产品设计',
+                githubUrl: '', demoUrl: '',
+            },
+        ];
+
+        const STATIC_SKILLS = [
+            { order: 1, icon: '📝', arcana: 'II',  name: '产品设计', subtitle: 'The Visionary', desc: 'React / Next.js / Tailwind，构建交互式个人网站与产品原型' },
+            { order: 2, icon: '💻', arcana: 'IV',  name: '数据分析', subtitle: 'The Analyst',   desc: '熟练使用 SQL 提取数据，结合 Python/Excel 进行分析与归因' },
+            { order: 3, icon: '🤖', arcana: 'III', name: 'AI工具',   subtitle: 'The Oracle',    desc: '精通Claude/Gemini/ChatGPT/Deepseek等大语言模型，擅长使用Google AI Studio进行Vibe-coding' },
+            { order: 4, icon: '🤝', arcana: 'V',   name: '项目管理', subtitle: 'The Commander', desc: '跨团队协作统筹，实习期间主导 AB 测试与内容分发全流程' },
+            { order: 5, icon: '⚖️', arcana: 'I',   name: '雅思 7.0', subtitle: 'The Linguist',  desc: '无障碍读写英语，以英语为工作语言' },
+            { order: 6, icon: '🚴', arcana: 'VI',  name: '骑行',     subtitle: 'The Cyclist',   desc: '个人最长骑行记录4小时90km，累积里程500km' },
+        ];
+        // ── END STATIC DATA ───────────────────────────────────────────────────
 
         (function() {
             const scene = document.getElementById('stackScene');
@@ -2123,11 +2137,10 @@
                 });
             }
 
-            // ── Load photos from Notion ──
+            // ── Load photos from static data ──
             async function loadHeroPhotos() {
                 try {
-                    const res    = await fetch(API_BASE + '/api/photos');
-                    const data   = await res.json();
+                    const data   = STATIC_PHOTOS;
                     if (!data || data.length === 0) return;
                     const photos = data.slice(0, 4);
                     cardEls.forEach((card, i) => {
@@ -2210,12 +2223,8 @@
 
         async function loadInternships() {
             try {
-                const [internRes, projRes] = await Promise.all([
-                    fetch(API_BASE + '/api/internships'),
-                    fetch(API_BASE + '/api/internship-projects')
-                ]);
-                const internData = await internRes.json();
-                const projData   = await projRes.json();
+                const internData = STATIC_INTERNSHIPS;
+                const projData   = STATIC_INTERNSHIP_PROJECTS;
 
                 // 把项目按公司名分组
                 const projByCompany = {};
@@ -2266,101 +2275,153 @@
                     skills:   [],
                 }));
 
-                renderInternshipGrid(internships);
+                renderTimeline(internships);
             } catch(e) {
                 console.error('Failed to load internships:', e);
-                renderInternshipGrid([]); // 降级空状态
+                renderTimeline([]);
             }
         }
 
 
-        function renderInternshipGrid(internships) {
-            const grid = document.getElementById('internship-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            if (!internships || internships.length === 0) return;
+        // ── hardcoded social media entry ──
+        const SOCIAL_ENTRY = {
+            company:  '小红书自媒体',
+            role:     '内容创作者 · AI × 法律赛道',
+            period:   '2025.02 – 2025.07',
+            dotColor: '#993556',
+            dateColor:'#993556',
+            projects: [
+                { name:'账号冷启动', metric:'0→1200粉', desc:'独立运营账号，两个月累计获赞 1.2w，单篇笔记最高阅读量 5w。' },
+                { name:'数据驱动选题', metric:'多篇爆款', desc:'监控后台 CTR 与完读率指标，持续优化选题策略，打造多篇爆款内容。' },
+                { name:'博主孵化 & 私域', metric:'2k→7k粉', desc:'协助孵化博主账号，参与直播内容提炼与二创，构建 400 人私域社群，设计付费产品。' },
+            ],
+        };
 
-            const colorConfig = {
-                blue:   { tagBg: '#E8F0FE', tagText: '#1a4fa0' },
-                green:  { tagBg: '#E6F4EA', tagText: '#1e6b3a' },
-                orange: { tagBg: '#FEF3E2', tagText: '#8a5200' },
+        function renderTimeline(internships) {
+            const wrap = document.getElementById('internship-timeline');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            const colorMap = {
+                blue:   { dot:'#003366', date:'#1a4fa0', metric:'#1a4fa0' },
+                green:  { dot:'#1e6b3a', date:'#1e6b3a', metric:'#1e6b3a' },
+                orange: { dot:'#b09060', date:'#8a5200', metric:'#8a5200' },
             };
 
-            internships.forEach((intern, index) => {
-                const card = document.createElement('div');
-                card.className = 'intern-card'; card.style.opacity = '1'; card.style.transform = 'none';
-                const cc = colorConfig[intern.tagColor] || colorConfig.blue;
+            const allEntries = [...internships, SOCIAL_ENTRY];
 
-                // Header: company + period
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'intern-card-header';
-                headerDiv.innerHTML = `
-                    <div>
-                        <p class="intern-company">${intern.company}</p>
-                        <p class="intern-role">${intern.role}</p>
-                    </div>
-                    <span class="intern-period-tag" style="background:${cc.tagBg}; color:${cc.tagText};">
-                        ${intern.period}
-                    </span>
-                `;
-                card.appendChild(headerDiv);
+            allEntries.forEach((intern, idx) => {
+                const cc = colorMap[intern.tagColor] || colorMap.orange;
+                const dotColor   = intern.dotColor   || cc.dot;
+                const dateColor  = intern.dateColor  || cc.date;
+                const metricColor= intern.metricColor|| cc.metric;
 
-                // Projects
-                const projectsDiv = document.createElement('div');
-                projectsDiv.className = 'intern-projects';
-                intern.projects.forEach(proj => {
-                    const projDiv = document.createElement('div');
-                    projDiv.className = 'intern-project';
-                    projDiv.innerHTML = `
-                        <div class="intern-project-header">
-                            <div class="intern-project-title-wrap">
-                                <span class="intern-project-tag" style="background:${cc.tagBg}; color:${cc.tagText};">${proj.tag}</span>
-                                <h4 class="intern-project-title">${proj.title}</h4>
-                            </div>
-                            <span class="intern-project-metric" style="color:${cc.tagText};">${proj.metric}</span>
+                const entry = document.createElement('div');
+                entry.className = 'tl-entry';
+
+                // Dot
+                const dot = document.createElement('div');
+                dot.className = 'tl-dot';
+                dot.style.background = dotColor;
+                entry.appendChild(dot);
+
+                // Date
+                const dateEl = document.createElement('div');
+                dateEl.className = 'tl-date';
+                dateEl.style.color = dateColor;
+                dateEl.innerHTML = `<span class="tl-word" style="transition-delay:0ms">${intern.period}</span>`;
+                entry.appendChild(dateEl);
+
+                // Company
+                const compEl = document.createElement('span');
+                compEl.className = 'tl-company';
+                compEl.innerHTML = intern.company.split('').map((ch, i) =>
+                    `<span class="tl-word" style="transition-delay:${60 + i*18}ms">${ch}</span>`
+                ).join('');
+                entry.appendChild(compEl);
+
+                // Role
+                const roleEl = document.createElement('span');
+                roleEl.className = 'tl-role';
+                roleEl.innerHTML = `<span class="tl-word" style="transition-delay:200ms">${intern.role}</span>`;
+                entry.appendChild(roleEl);
+
+                // Tag pills — project names as summary
+                if (intern.projects && intern.projects.length) {
+                    const tagsEl = document.createElement('div');
+                    tagsEl.className = 'tl-tags';
+                    intern.projects.forEach((p, pi) => {
+                        const t = document.createElement('span');
+                        t.className = 'tl-tag tl-word';
+                        t.style.transitionDelay = (280 + pi * 60) + 'ms';
+                        t.textContent = p.name || p.title || '';
+                        tagsEl.appendChild(t);
+                    });
+                    entry.appendChild(tagsEl);
+                }
+
+                // Expandable detail
+                const detail = document.createElement('div');
+                detail.className = 'tl-detail';
+                const inner = document.createElement('div');
+                inner.className = 'tl-detail-inner';
+                (intern.projects || []).forEach(p => {
+                    const proj = document.createElement('div');
+                    proj.className = 'tl-proj';
+                    proj.innerHTML = `
+                        <div style="flex:1;">
+                            <div class="tl-proj-name">${p.name || p.title || ''}</div>
+                            <div class="tl-proj-desc">${p.desc || p.description || ''}</div>
                         </div>
-                        <p class="intern-project-desc">${proj.desc}</p>
+                        <div class="tl-proj-metric" style="color:${metricColor}">${p.metric || ''}</div>
                     `;
-                    projectsDiv.appendChild(projDiv);
+                    inner.appendChild(proj);
                 });
-                card.appendChild(projectsDiv);
-
-                // Skills
-                const skillsDiv = document.createElement('div');
-                skillsDiv.className = 'intern-skills';
-                intern.skills.forEach(skill => {
-                    const s = document.createElement('span');
-                    s.className = 'intern-skill';
-                    s.textContent = skill;
-                    skillsDiv.appendChild(s);
-                });
-                card.appendChild(skillsDiv);
+                detail.appendChild(inner);
+                entry.appendChild(detail);
 
                 // Toggle button
-                const actionsDiv = document.createElement('div');
-                actionsDiv.className = 'intern-actions';
-
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'intern-btn intern-btn-outline';
-                toggleBtn.style.borderColor = cc.tagText;
-                toggleBtn.style.color = cc.tagText;
-                toggleBtn.textContent = '查看详情 ↓';
-                toggleBtn.addEventListener('mouseenter', () => toggleBtn.style.background = cc.tagBg);
-                toggleBtn.addEventListener('mouseleave', () => toggleBtn.style.background = 'transparent');
-                toggleBtn.addEventListener('click', () => {
-                    card.classList.toggle('expanded');
-                    toggleBtn.textContent = card.classList.contains('expanded') ? '收起详情 ↑' : '查看详情 ↓';
+                const btn = document.createElement('button');
+                btn.className = 'tl-toggle tl-word';
+                btn.style.color = dotColor;
+                btn.style.transitionDelay = (320 + (intern.projects || []).length * 60) + 'ms';
+                btn.textContent = '查看详情 ↓';
+                btn.addEventListener('click', () => {
+                    const open = detail.classList.toggle('open');
+                    btn.textContent = open ? '收起详情 ↑' : '查看详情 ↓';
                 });
+                entry.appendChild(btn);
 
-                const demoBtn = document.createElement('button');
-                demoBtn.className = 'intern-btn intern-btn-filled';
-                demoBtn.textContent = '了解更多 ↗';
+                // Divider (not for last)
+                if (idx < allEntries.length - 1) {
+                    const div = document.createElement('div');
+                    div.className = 'tl-divider';
+                    div.style.marginTop = '28px';
+                    entry.appendChild(div);
+                }
 
-                actionsDiv.appendChild(toggleBtn);
-                actionsDiv.appendChild(demoBtn);
-                card.appendChild(actionsDiv);
+                wrap.appendChild(entry);
+            });
 
-                grid.appendChild(card);
+            // Animate timeline line + entries on scroll into view
+            const lineObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { wrap.classList.add('line-in'); lineObs.disconnect(); }
+                });
+            }, { threshold: 0.05 });
+            lineObs.observe(wrap);
+
+            const entryObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('tl-in');
+                        entryObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            wrap.querySelectorAll('.tl-entry').forEach((el, i) => {
+                setTimeout(() => entryObs.observe(el), i * 80);
             });
         }
 
@@ -2520,8 +2581,7 @@
 
         async function loadPortfolio() {
             try {
-                const res  = await fetch(API_BASE + '/api/portfolio');
-                const data = await res.json();
+                const data = STATIC_PORTFOLIO;
 
                 const projects = data.map(item => {
                     const tc = tagColorMap[item.tagColor] || tagColorMap.blue;
@@ -2748,8 +2808,7 @@
 
         async function loadSkills() {
             try {
-                const res  = await fetch(API_BASE + '/api/skills');
-                const data = await res.json();
+                const data = STATIC_SKILLS;
                 if (data && data.length > 0) {
                     tarotSkills = data.map(s => ({
                         id:       s.order,
