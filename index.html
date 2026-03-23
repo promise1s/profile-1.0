@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rachel的个人主页</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     
     <style>
         /* 
@@ -12,7 +12,7 @@
          */
         :root {
             /* Light Mode (Default) */
-            --color-bg: #FFFFFF;          /* Pure White */
+            --color-bg: #FAF7F2;          /* Cream — unified with hero */
             --color-accent: #FFCC66;      /* Warm Yellow */
             --color-primary: #003366;     /* Navy Blue */
             --color-secondary: #336699;   /* Steel Blue */
@@ -226,10 +226,10 @@
         #hero-section {
             background: var(--cream) !important;
             display: grid !important;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 50% 50%;
             align-items: center;
             justify-items: unset;
-            padding: 0 60px;
+            padding: 0 0 0 100px;
             overflow: hidden;
         }
 
@@ -269,46 +269,45 @@
         .nav-pill:hover::after { width: 100%; }
         .theme-toggle-btn::after { display: none !important; }
 
-        /* HERO LEFT */
         .hero-new-left {
             display: flex; flex-direction: column; justify-content: center;
             height: 100%;
-            padding: 100px 0 60px;
+            padding: 80px 0 48px;
             z-index: 2;
         }
         .hero-eyebrow {
-            font-size: 10px; letter-spacing: 0.3em; color: var(--amber);
-            font-weight: 500; text-transform: uppercase; margin-bottom: 20px;
+            font-size: 12px; letter-spacing: 0.3em; color: var(--amber);
+            font-weight: 500; text-transform: uppercase; margin-bottom: 14px;
             font-family: var(--font-en);
         }
         .hero-new-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(48px, 5.5vw, 76px);
+            font-size: clamp(62px, 7.5vw, 96px);
             color: var(--navy); letter-spacing: 0.08em;
-            line-height: 0.95; margin-bottom: 12px;
+            line-height: 0.95; margin-bottom: 11px;
         }
         .hero-new-rachel {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px; font-weight: 300; font-style: italic;
-            color: var(--amber); letter-spacing: 0.15em; margin-bottom: 32px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px; font-weight: 300; font-style: italic;
+            color: var(--amber); letter-spacing: 0.18em; margin-bottom: 22px;
         }
         .hero-new-tagline {
-            font-size: 13px; color: var(--text-muted);
-            line-height: 2.2; margin-bottom: 36px; font-weight: 300;
+            font-size: 16px; color: var(--text-muted);
+            line-height: 2.0; margin-bottom: 26px; font-weight: 300;
             font-family: var(--font-en);
         }
-        .hero-new-cta { display: flex; gap: 12px; margin-bottom: 48px; }
+        .hero-new-cta { display: flex; gap: 12px; margin-bottom: 28px; }
         .hero-btn-p {
-            padding: 12px 28px; background: var(--navy); color: #fff;
-            font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+            padding: 13px 30px; background: var(--navy); color: #fff;
+            font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
             text-transform: uppercase; border: none; border-radius: 2px;
             cursor: pointer; transition: background 0.2s;
             font-family: var(--font-en);
         }
         .hero-btn-p:hover { background: var(--navy-light); }
         .hero-btn-o {
-            padding: 12px 28px; background: transparent; color: var(--navy);
-            font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+            padding: 13px 30px; background: transparent; color: var(--navy);
+            font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
             text-transform: uppercase; border: 1px solid var(--navy);
             border-radius: 2px; cursor: pointer; transition: all 0.2s;
             font-family: var(--font-en);
@@ -317,32 +316,55 @@
         .hero-new-stats {
             display: flex; gap: 32px;
             padding-top: 24px; border-top: 0.5px solid var(--hero-border);
+            overflow: hidden;
         }
+
+        /* ── WORD-BY-WORD REVEAL ── */
+        .hw {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.48s cubic-bezier(0.22,1,0.36,1),
+                        transform 0.48s cubic-bezier(0.22,1,0.36,1);
+        }
+        .hw.in { opacity: 1; transform: translateY(0); }
+        .hero-eyebrow     { overflow: hidden; }
+        .hero-new-name    { overflow: hidden; }
+        .hero-new-rachel  { overflow: hidden; }
+        .hero-tagline-row { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+        .hero-new-cta     { display: flex; gap: 12px; margin-bottom: 28px; overflow: hidden; }
+        .hero-new-stats   { overflow: hidden; }
+        .hw-stat { display: flex; flex-direction: column; gap: 2px; }
         .hero-stat-num {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 26px; color: var(--navy);
+            font-size: 30px; color: var(--navy);
             letter-spacing: 0.05em; line-height: 1;
         }
         .hero-stat-label {
-            font-size: 10px; color: var(--text-muted);
+            font-size: 11px; color: var(--text-muted);
             letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase;
             font-family: var(--font-en);
         }
 
         /* HERO RIGHT / PHOTO STACK */
         .hero-new-right {
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: flex-start;
             height: 100%; z-index: 2;
+            overflow: visible;
+            padding-left: 20px;
         }
-        .stack-wrap { position: relative; }
+        .stack-wrap { position: relative; overflow: visible; }
         .stack-scene {
-            position: relative; width: 280px; height: 360px; cursor: pointer;
+            position: relative; width: 400px; height: 500px; cursor: pointer;
+            overflow: visible;
         }
         .stack-card {
-            position: absolute; width: 225px; height: 300px;
+            position: absolute; width: 340px; height: 460px;
             border-radius: 20px; overflow: hidden;
-            transform-origin: bottom center;
             user-select: none; will-change: transform, opacity;
+            opacity: 0;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
         }
         .stack-card img {
             width: 100%; height: 100%;
@@ -356,42 +378,6 @@
             font-size: 11px; color: var(--text-muted);
             letter-spacing: 0.1em;
         }
-        .stack-card[data-depth="2"] {
-            top: 0; left: 28px; z-index: 3;
-            box-shadow: 0 16px 48px rgba(0,0,0,0.13);
-            transform: rotate(-1deg);
-            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94),
-                        box-shadow 0.7s ease, z-index 0s 0.42s;
-        }
-        .stack-card[data-depth="1"] {
-            top: 18px; left: 14px; z-index: 2;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-            transform: rotate(-5deg);
-            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94) 0.08s,
-                        box-shadow 0.7s ease, z-index 0s 0.42s;
-        }
-        .stack-card[data-depth="0"] {
-            top: 34px; left: 0px; z-index: 1;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            transform: rotate(-9deg);
-            transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94) 0.16s,
-                        box-shadow 0.7s ease, z-index 0s 0.42s;
-        }
-        .stack-scene:hover .stack-card[data-depth="2"] {
-            transform: rotate(2deg) translate(14px, -4px);
-            box-shadow: 0 18px 48px rgba(0,0,0,0.15);
-        }
-        .stack-scene:hover .stack-card[data-depth="1"] {
-            transform: rotate(-4deg) translate(0px, -6px);
-            box-shadow: 0 14px 36px rgba(0,0,0,0.12);
-        }
-        .stack-scene:hover .stack-card[data-depth="0"] {
-            transform: rotate(-10deg) translate(-14px, 0px);
-            box-shadow: 0 8px 22px rgba(0,0,0,0.09);
-        }
-        .stack-scene.lock-hover:hover .stack-card[data-depth="2"] { transform: rotate(-1deg); }
-        .stack-scene.lock-hover:hover .stack-card[data-depth="1"] { transform: rotate(-5deg); }
-        .stack-scene.lock-hover:hover .stack-card[data-depth="0"] { transform: rotate(-9deg); }
         .stack-hint {
             margin-top: 18px; text-align: center;
             font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
@@ -1414,6 +1400,94 @@
             opacity: 0;
         }
 
+        /* ── INTRO OVERLAY ── */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #FAF7F2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transform: translateY(0);
+            transition: transform 0.72s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #intro-overlay.fly-up {
+            transform: translateY(-102%);
+            pointer-events: none;
+        }
+        #intro-name {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(42px, 7vw, 72px);
+            font-weight: 400;
+            letter-spacing: 0.45em;
+            color: #003366;
+            text-transform: uppercase;
+            margin-right: -0.45em;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.6s cubic-bezier(0.12, 0.8, 0.32, 1),
+                        transform 1.6s cubic-bezier(0.12, 0.8, 0.32, 1);
+            overflow: hidden;
+        }
+        #intro-name.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #intro-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.38em;
+            color: #b09060;
+            text-transform: uppercase;
+            margin-top: 20px;
+            margin-right: -0.38em;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 1s cubic-bezier(0.4,0,0.2,1) 0.9s,
+                        transform 1s cubic-bezier(0.4,0,0.2,1) 0.9s;
+        }
+        #intro-sub.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #intro-progress { display: none; }
+        #intro-line-left {
+            position: absolute;
+            top: 40px; right: 50%;
+            height: 1px; width: 0;
+            background: #003366; opacity: 0.45;
+            transform-origin: right center;
+        }
+        #intro-line-right {
+            position: absolute;
+            top: 40px; left: 50%;
+            height: 1px; width: 0;
+            background: #003366; opacity: 0.45;
+            transform-origin: left center;
+        }
+
+        /* ── CIRCLE IRIS REVEAL ── */
+        #iris-overlay {
+            position: fixed;
+            inset: 0;
+            background: #003366;
+            z-index: 8888;
+            pointer-events: none;
+            clip-path: circle(0% at 50% 50%);
+            transition: clip-path 0s;
+        }
+        #iris-overlay.expand {
+            clip-path: circle(100% at 50% 50%);
+            transition: clip-path 0.38s cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        #iris-overlay.collapse {
+            clip-path: circle(0% at 50% 50%);
+            transition: clip-path 0.38s cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
         /* Confetti Animation */
         .confetti-piece {
             position: fixed;
@@ -1431,6 +1505,20 @@
     </style>
 </head>
 <body>
+
+    <!-- INTRO OVERLAY -->
+    <div id="intro-overlay">
+        <div id="intro-line-left"></div>
+        <div id="intro-line-right"></div>
+        <div style="overflow:hidden;padding-bottom:6px;">
+            <div id="intro-name">RACHEL</div>
+        </div>
+        <div id="intro-sub">Portfolio · 2026</div>
+        <div id="intro-progress"></div>
+    </div>
+
+    <!-- IRIS TRANSITION OVERLAY -->
+    <div id="iris-overlay"></div>
 
     <!-- Scroll Container -->
     <div id="app-container">
@@ -1451,34 +1539,59 @@
                 </div>
             </nav>
 
-            <!-- LEFT: Text -->
+            <!-- LEFT: Text — Word-by-Word Reveal -->
             <div class="hero-new-left">
-                <div class="hero-eyebrow">Product · Operations · AI</div>
-                <div class="hero-new-name">SHAO<br>XU NUO</div>
-                <div class="hero-new-rachel">Rachel</div>
-                <div class="hero-new-tagline">
-                    <strong style="font-family:var(--font-zh);color:#003366">爱玩 AI</strong> ·
-                    <span style="font-family:var(--font-zh);color:#b09060">懂运营</span><br>
-                    <span style="font-family:var(--font-zh);color:#b07030;font-weight:300">法学生</span> ·
-                    <strong style="font-family:var(--font-zh);color:#003366">喜欢想产品</strong>
+                <div class="hero-eyebrow">
+                    <span class="hw" data-hw-delay="0">PRODUCT</span>
+                    <span class="hw" data-hw-delay="60" style="margin:0 2px">·</span>
+                    <span class="hw" data-hw-delay="120">OPERATIONS</span>
+                    <span class="hw" data-hw-delay="180" style="margin:0 2px">·</span>
+                    <span class="hw" data-hw-delay="240">AI</span>
+                </div>
+                <div class="hero-new-name">
+                    <span class="hw" data-hw-delay="340">SHAO</span><br>
+                    <span class="hw" data-hw-delay="420">XU NUO</span>
+                </div>
+                <div class="hero-new-rachel">
+                    <span class="hw" data-hw-delay="520">Rachel</span>
+                </div>
+                <div style="margin-bottom:22px;">
+                    <div class="hero-tagline-row" style="margin-bottom:4px;">
+                        <span class="hw" data-hw-delay="640" style="display:flex;align-items:center;gap:6px;">
+                            <strong style="font-family:var(--font-zh);color:#003366;font-weight:500;font-size:15px;">爱玩 AI</strong>
+                            <span style="color:#c8bfb0;">·</span>
+                            <span style="font-family:var(--font-zh);color:#b09060;font-weight:300;font-size:14px;">懂运营</span>
+                        </span>
+                    </div>
+                    <div class="hero-tagline-row">
+                        <span class="hw" data-hw-delay="720" style="display:flex;align-items:center;gap:6px;">
+                            <span style="font-family:var(--font-zh);color:#b09060;font-weight:300;font-size:14px;">法学生</span>
+                            <span style="color:#c8bfb0;">·</span>
+                            <strong style="font-family:var(--font-zh);color:#003366;font-weight:500;font-size:15px;">爱拆产品</strong>
+                        </span>
+                    </div>
                 </div>
                 <div class="hero-new-cta">
-                    <button class="hero-btn-p" onclick="scrollToSection(1)">LEARN MORE</button>
-                    <button class="hero-btn-o" onclick="scrollToSection(4)">CONTACT ME</button>
+                    <span class="hw" data-hw-delay="860" style="display:inline-block;">
+                        <button class="hero-btn-p" onclick="scrollToSection(1)">LEARN MORE</button>
+                    </span>
+                    <span class="hw" data-hw-delay="940" style="display:inline-block;">
+                        <button class="hero-btn-o" onclick="scrollToSection(4)">CONTACT ME</button>
+                    </span>
                 </div>
                 <div class="hero-new-stats">
-                    <div>
-                        <div class="hero-stat-num">3</div>
-                        <div class="hero-stat-label" style="font-family:var(--font-zh)">段实习经历</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-num">7</div>
-                        <div class="hero-stat-label">IELTS</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-num">AI</div>
-                        <div class="hero-stat-label">Claude / OpenClaw</div>
-                    </div>
+                    <span class="hw hw-stat" data-hw-delay="1040">
+                        <span class="hero-stat-num">3</span>
+                        <span class="hero-stat-label" style="font-family:var(--font-zh)">段实习经历</span>
+                    </span>
+                    <span class="hw hw-stat" data-hw-delay="1100">
+                        <span class="hero-stat-num">7</span>
+                        <span class="hero-stat-label">IELTS</span>
+                    </span>
+                    <span class="hw hw-stat" data-hw-delay="1160">
+                        <span class="hero-stat-num">AI</span>
+                        <span class="hero-stat-label">Claude / OpenClaw</span>
+                    </span>
                 </div>
             </div>
 
@@ -1486,15 +1599,18 @@
             <div class="hero-new-right">
                 <div class="stack-wrap">
                     <div class="stack-scene" id="stackScene">
-                        <!-- Photos loaded from Notion via JS -->
-                        <div class="stack-card" data-depth="0">
-                            <div class="photo-skeleton" id="photo-skeleton-0"></div>
+                        <!-- 4 cards, photos loaded from Notion via JS -->
+                        <div class="stack-card" id="scard-0">
+                            <div class="photo-skeleton"></div>
                         </div>
-                        <div class="stack-card" data-depth="1">
-                            <div class="photo-skeleton" id="photo-skeleton-1"></div>
+                        <div class="stack-card" id="scard-1">
+                            <div class="photo-skeleton"></div>
                         </div>
-                        <div class="stack-card" data-depth="2">
-                            <div class="photo-skeleton" id="photo-skeleton-2"></div>
+                        <div class="stack-card" id="scard-2">
+                            <div class="photo-skeleton"></div>
+                        </div>
+                        <div class="stack-card" id="scard-3">
+                            <div class="photo-skeleton"></div>
                         </div>
                     </div>
                     <div class="stack-hint" id="stackHint">点击切换照片</div>
@@ -1812,18 +1928,40 @@
             });
         }
 
-        // --- 1. SCROLL LOGIC (Vanilla JS) ---
+        // --- 1. SCROLL LOGIC with Circle Iris Reveal ---
+        const irisOverlay = document.getElementById('iris-overlay');
+        let irisLocked = false;
+
         function scrollToSection(index) {
             if (index < 0 || index >= state.totalSections) return;
-            state.currentSection = index;
-            appContainer.style.transform = `translateY(-${index * 100}vh)`;
-            
-            // Update Nav
-            navDots.forEach((d, i) => d.classList.toggle('active', i === index));
+            if (irisLocked) return;
+            if (index === state.currentSection) return;
+            irisLocked = true;
 
-            // State Reset Triggers
-            stopGachaAnimations();
-            if(index === 3) triggerSkills();
+            // Phase 1: iris expands (navy circle grows from centre)
+            irisOverlay.classList.remove('collapse');
+            irisOverlay.classList.add('expand');
+
+            setTimeout(() => {
+                // Page switch happens while iris is fully closed
+                state.currentSection = index;
+                appContainer.style.transition = 'none';
+                appContainer.style.transform = `translateY(-${index * 100}vh)`;
+                navDots.forEach((d, i) => d.classList.toggle('active', i === index));
+                stopGachaAnimations();
+                if (index === 3) triggerSkills();
+
+                // Phase 2: iris collapses revealing new page
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    irisOverlay.classList.remove('expand');
+                    irisOverlay.classList.add('collapse');
+                    setTimeout(() => {
+                        irisLocked = false;
+                        // restore smooth transition for wheel scroll
+                        appContainer.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
+                    }, 420);
+                }));
+            }, 400);
         }
         window.scrollToSection = scrollToSection;
 
@@ -1848,46 +1986,39 @@
         // Wheel Event
         let wheelTimeout;
         window.addEventListener('wheel', (e) => {
-            if (Math.abs(e.deltaY) < 15) return; // Ignore tiny trackpad movements
-            
-            if (handleScrollable(e.target, e.deltaY)) return; // Let container scroll
-            
+            if (Math.abs(e.deltaY) < 15) return;
+            if (handleScrollable(e.target, e.deltaY)) return;
+            if (irisLocked) return;
             if (!state.isScrolling) {
                 state.isScrolling = true;
                 if (e.deltaY > 0) scrollToSection(state.currentSection + 1);
                 else scrollToSection(state.currentSection - 1);
             }
-            
-            // Reset the scrolling state only after the user stops scrolling for 600ms
             clearTimeout(wheelTimeout);
-            wheelTimeout = setTimeout(() => { 
-                state.isScrolling = false; 
-            }, 600);
+            wheelTimeout = setTimeout(() => {
+                state.isScrolling = false;
+            }, 900);
         }, { passive: false });
 
         // Touch Events
         let touchStartY = 0;
         window.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY, { passive: true });
         window.addEventListener('touchend', e => {
-            if (state.isScrolling) return;
+            if (state.isScrolling || irisLocked) return;
             const touchEndY = e.changedTouches[0].clientY;
-            const deltaY = touchStartY - touchEndY; // Positive if swiping up (scrolling down)
-            
+            const deltaY = touchStartY - touchEndY;
             if (Math.abs(deltaY) > 50) {
-                if (handleScrollable(e.target, deltaY)) return; // Let container scroll
-                
+                if (handleScrollable(e.target, deltaY)) return;
                 state.isScrolling = true;
                 if (deltaY > 0) scrollToSection(state.currentSection + 1);
                 else scrollToSection(state.currentSection - 1);
-                
-                setTimeout(() => { state.isScrolling = false; }, 600);
+                setTimeout(() => { state.isScrolling = false; }, 900);
             }
         });
 
 
 
-        // --- 2. HERO PHOTO STACK ---
-        // ── 从 Notion API 动态加载照片 ──
+        // --- 2. HERO PHOTO STACK (scatter entry + float orbit + 3-phase click cycle) ---
         const API_BASE = 'https://rachel-api.xiaoruannn.workers.dev';
 
         (function() {
@@ -1895,68 +2026,181 @@
             const hint  = document.getElementById('stackHint');
             if (!scene) return;
 
-            // ── 加载照片 ──
+            const POSES = [
+                { top: 60,  left: 10,   rot: -13, z: 1, shadow: '0 6px 18px rgba(0,0,0,0.07)'  },
+                { top: 38,  left: 28,   rot: -8,  z: 2, shadow: '0 10px 28px rgba(0,0,0,0.09)' },
+                { top: 18,  left: 46,   rot: -3,  z: 3, shadow: '0 14px 40px rgba(0,0,0,0.11)' },
+                { top: 0,   left: 62,   rot:  1,  z: 4, shadow: '0 20px 54px rgba(0,0,0,0.14)' },
+            ];
+
+            const cardEls = [
+                document.getElementById('scard-0'),
+                document.getElementById('scard-1'),
+                document.getElementById('scard-2'),
+                document.getElementById('scard-3'),
+            ];
+
+            let order       = [0, 1, 2, 3];
+            let busy        = false;
+            let floatRafIds = [];
+            let floatActive = false;
+
+            // ── Util: apply a pose with or without transition ──
+            function applyPose(cardEl, pose, animate) {
+                cardEl.style.transition = animate
+                    ? 'transform 0.82s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.7s ease, opacity 0.4s ease'
+                    : 'none';
+                cardEl.style.top       = pose.top  + 'px';
+                cardEl.style.left      = pose.left + 'px';
+                cardEl.style.zIndex    = pose.z;
+                cardEl.style.transform = 'rotate(' + pose.rot + 'deg)';
+                cardEl.style.boxShadow = pose.shadow;
+                cardEl.style.opacity   = '1';
+            }
+
+            // ── Entry: spring scatter from center ──
+            function scatterEntry() {
+                const SCATTER_DELAY = 500;
+                cardEls.forEach((card, i) => {
+                    const p = POSES[i];
+                    card.style.transition = 'none';
+                    card.style.top        = '50%';
+                    card.style.left       = '50%';
+                    card.style.transform  = 'translate(-50%,-50%) scale(0) rotate(0deg)';
+                    card.style.opacity    = '0';
+                    card.style.zIndex     = p.z;
+                    card.style.boxShadow  = 'none';
+
+                    setTimeout(() => {
+                        const dur = 580 + Math.random() * 80;
+                        card.style.transition =
+                            'top '       + dur + 'ms cubic-bezier(0.34,1.56,0.64,1) 0ms,' +
+                            'left '      + dur + 'ms cubic-bezier(0.34,1.56,0.64,1) 0ms,' +
+                            'transform ' + dur + 'ms cubic-bezier(0.34,1.56,0.64,1) 0ms,' +
+                            'opacity 300ms ease 0ms,' +
+                            'box-shadow 400ms ease 200ms';
+                        card.style.top       = p.top  + 'px';
+                        card.style.left      = p.left + 'px';
+                        card.style.transform = 'rotate(' + p.rot + 'deg)';
+                        card.style.opacity   = '1';
+                        card.style.boxShadow = p.shadow;
+                    }, SCATTER_DELAY + i * 90);
+                });
+
+                // start float after scatter settles
+                setTimeout(startFloat, SCATTER_DELAY + 1500);
+            }
+
+            // ── Continuous independent float per card ──
+            function startFloat() {
+                floatActive = true;
+                floatRafIds.forEach(id => cancelAnimationFrame(id));
+                floatRafIds = [];
+
+                cardEls.forEach((card, i) => {
+                    const baseTop  = POSES[i].top;
+                    const baseLeft = POSES[i].left;
+                    const baseRot  = POSES[i].rot;
+                    const speed    = 2400 + i * 380;
+                    const ampY     = 5   + i * 1.5;
+                    const ampX     = 3   + i * 1.0;
+                    const ampR     = 0.4 + i * 0.15;
+                    const phase    = i * (Math.PI / 2.2);
+                    let t = 0;
+
+                    function tick() {
+                        t += 16;
+                        const dy = Math.sin((t / speed) * Math.PI * 2 + phase) * ampY;
+                        const dx = Math.cos((t / speed) * Math.PI * 2 * 0.7 + phase) * ampX;
+                        const dr = Math.sin((t / speed) * Math.PI * 2 * 0.5 + phase) * ampR;
+                        card.style.transition = 'none';
+                        card.style.top        = (baseTop  + dy) + 'px';
+                        card.style.left       = (baseLeft + dx) + 'px';
+                        card.style.transform  = 'rotate(' + (baseRot + dr) + 'deg)';
+                        floatRafIds.push(requestAnimationFrame(tick));
+                    }
+                    floatRafIds.push(requestAnimationFrame(tick));
+                });
+            }
+
+            // ── Load photos from Notion ──
             async function loadHeroPhotos() {
                 try {
-                    const res  = await fetch(API_BASE + '/api/photos');
-                    const data = await res.json();
+                    const res    = await fetch(API_BASE + '/api/photos');
+                    const data   = await res.json();
                     if (!data || data.length === 0) return;
-
-                    // 取前三张，按排序
-                    const photos = data.slice(0, 3);
-                    const cards  = [...scene.querySelectorAll('.stack-card')];
-
-                    cards.forEach((card, i) => {
-                        const photo = photos[i];
-                        if (!photo) return;
-                        // 清空 skeleton，插入真实图片
+                    const photos = data.slice(0, 4);
+                    cardEls.forEach((card, i) => {
+                        if (!photos[i]) return;
                         card.innerHTML = '';
                         const img = document.createElement('img');
-                        img.src = photo.url;
-                        img.alt = photo.title || '';
+                        img.src       = photos[i].url;
+                        img.alt       = photos[i].title || '';
                         img.draggable = false;
                         img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center top;display:block;pointer-events:none;';
                         card.appendChild(img);
                     });
                 } catch(e) {
-                    console.warn('Hero photos load failed, skipping:', e);
+                    console.warn('Hero photos load failed:', e);
                 }
             }
             loadHeroPhotos();
+            scatterEntry();
 
-            // ── 交互逻辑 ──
-            let busy = false;
+            // ── Hover hint ──
+            scene.addEventListener('mouseenter', () => { hint.style.opacity = '1'; });
+            scene.addEventListener('mouseleave', () => { hint.style.opacity = '0'; });
 
-            scene.addEventListener('mouseenter', () => {
-                scene.classList.remove('lock-hover');
-                hint.style.opacity = '1';
-            });
-            scene.addEventListener('mouseleave', () => {
-                hint.style.opacity = '0';
-                scene.classList.remove('lock-hover');
-            });
-
-            function getCards() {
-                const all = [...scene.querySelectorAll('.stack-card')];
-                return [0,1,2].map(d => all.find(c => parseInt(c.dataset.depth) === d));
-            }
-
+            // ── Click: stop float, run 3-phase cycle, resume float ──
             scene.addEventListener('click', () => {
                 if (busy) return;
                 busy = true;
-                scene.classList.add('lock-hover');
-                const [d0, d1, d2] = getCards();
-                d2.dataset.depth = '0';
-                d1.dataset.depth = '2';
-                d0.dataset.depth = '1';
-                setTimeout(() => { busy = false; }, 900);
+
+                // pause float
+                floatRafIds.forEach(id => cancelAnimationFrame(id));
+                floatRafIds = [];
+
+                const topCard = cardEls[order[3]];
+
+                // Phase 1: top card flies out right
+                topCard.style.transition = 'transform 0.26s cubic-bezier(0.4,0,1,1), opacity 0.22s ease';
+                topCard.style.transform  = 'rotate(18deg) translate(160px,-24px)';
+                topCard.style.opacity    = '0';
+
+                setTimeout(() => {
+                    order = [order[1], order[2], order[3], order[0]];
+
+                    // teleport flying card to bottom pose (invisible)
+                    const newBottom = cardEls[order[0]];
+                    const bp = POSES[0];
+                    newBottom.style.transition = 'none';
+                    newBottom.style.top        = bp.top  + 'px';
+                    newBottom.style.left       = bp.left + 'px';
+                    newBottom.style.zIndex     = bp.z;
+                    newBottom.style.transform  = 'rotate(' + bp.rot + 'deg)';
+                    newBottom.style.boxShadow  = bp.shadow;
+                    newBottom.style.opacity    = '0';
+
+                    // Phase 2: remaining 3 cards smoothly ascend
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        [1, 2, 3].forEach(pi => applyPose(cardEls[order[pi]], POSES[pi], true));
+
+                        // Phase 3: new bottom fades in, then resume float
+                        setTimeout(() => {
+                            newBottom.style.transition = 'opacity 0.38s ease';
+                            newBottom.style.opacity    = '1';
+                            setTimeout(() => {
+                                busy = false;
+                                startFloat();
+                            }, 420);
+                        }, 200);
+                    }));
+                }, 260);
             });
         })();
 
-
         // --- 3. INTERNSHIP HANDBOOK ---
         // ── 从 Notion API 动态获取实习数据 ──
-        // ── /api/photos 也由同一个 Worker 提供，DB_ID 在 Worker 里配置 ──
         // tagColor 映射
         function getTagColorByCompany(company) {
             if (company.includes('美团')) return 'blue';
@@ -2459,6 +2703,7 @@
         }
 
         loadPortfolio();
+        initSkillsFlip();
 
         // --- Scroll Reveal Observer ---
         const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -2628,6 +2873,48 @@
                 setTimeout(() => confetti.remove(), 5000);
             }
         }
+
+        // --- INTRO OVERLAY ---
+        (function() {
+            const overlay  = document.getElementById('intro-overlay');
+            const nameEl   = document.getElementById('intro-name');
+            const subEl    = document.getElementById('intro-sub');
+            const lineL    = document.getElementById('intro-line-left');
+            const lineR    = document.getElementById('intro-line-right');
+            if (!overlay) return;
+
+            // Step 1 (300ms): lines expand from centre to edges over 2.8s
+            setTimeout(() => {
+                const half = (window.innerWidth / 2) + 'px';
+                lineL.style.transition = 'width 2.8s cubic-bezier(0.4,0,0.2,1)';
+                lineR.style.transition = 'width 2.8s cubic-bezier(0.4,0,0.2,1)';
+                lineL.style.width = half;
+                lineR.style.width = half;
+            }, 300);
+
+            // Step 2 (400ms): RACHEL rises
+            setTimeout(() => {
+                nameEl.classList.add('visible');
+                subEl.classList.add('visible');
+            }, 400);
+
+            // Step 3 (3.5s): lines fade, overlay flies up, then word reveal fires
+            setTimeout(() => {
+                lineL.style.transition = 'opacity 0.25s ease';
+                lineR.style.transition = 'opacity 0.25s ease';
+                lineL.style.opacity = '0';
+                lineR.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.classList.add('fly-up');
+                    setTimeout(() => {
+                        document.querySelectorAll('.hw').forEach(el => {
+                            const delay = parseInt(el.dataset.hwDelay) || 0;
+                            setTimeout(() => el.classList.add('in'), delay);
+                        });
+                    }, 400);
+                }, 200);
+            }, 3500);
+        })();
 
     </script>
 </body>
