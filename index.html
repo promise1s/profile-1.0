@@ -623,10 +623,13 @@
             margin-left: 20px;
         }
         .md-proj-grid.large-card .md-proj-metric-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 26px; color: #003366;
-            letter-spacing: 0.04em; line-height: 1;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px; font-weight: 600; color: #003366;
+            letter-spacing: 0.02em; line-height: 1;
             text-align: right;
+            background: #eef3fa;
+            padding: 3px 10px;
+            border-radius: 20px;
         }
         .md-proj-grid.large-card .md-proj-metric-label {
             font-size: 10px; color: #b0a898;
@@ -2419,12 +2422,13 @@
                 }
 
                 const internships = internData.map(item => ({
-                    company:  item.company,
-                    role:     item.role,
-                    period:   item.startDate + ' – ' + item.endDate,
-                    tagColor: getTagColorByCompany(item.company),
-                    projects: matchProjects(item.company),
-                    skills:   [],
+                    company:   item.company,
+                    role:      item.role,
+                    period:    item.startDate + ' – ' + item.endDate,
+                    tagColor:  getTagColorByCompany(item.company),
+                    projects:  matchProjects(item.company),
+                    northStar: item.northStar || '',
+                    skills:    [],
                 }));
 
                 renderMasterDetail(internships);
