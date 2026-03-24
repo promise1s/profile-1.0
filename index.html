@@ -583,6 +583,54 @@
             border-radius: 20px;
             align-self: flex-start;
         }
+        /* ── North star capsule in header ── */
+        .md-north-star {
+            margin-left: auto;
+            font-size: 11px; font-weight: 600;
+            color: #b09060;
+            background: #faf3e8;
+            border: 1px solid #e8d8b8;
+            padding: 3px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+        }
+        /* ── Large-card mode (≤2 projects) ── */
+        .md-proj-grid.large-card .md-proj-card {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 22px 24px;
+        }
+        .md-proj-grid.large-card .md-proj-card-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .md-proj-grid.large-card .md-proj-tag  { font-size: 11px; }
+        .md-proj-grid.large-card .md-proj-name { font-size: 18px; }
+        .md-proj-grid.large-card .md-proj-desc { font-size: 14px; line-height: 1.7; }
+        .md-proj-grid.large-card .md-proj-metric-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: flex-end;
+            min-width: 120px;
+            padding-left: 16px;
+            border-left: 1px solid #e8e0d4;
+        }
+        .md-proj-grid.large-card .md-proj-metric-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px; color: #003366;
+            letter-spacing: 0.04em; line-height: 1;
+            text-align: right;
+        }
+        .md-proj-grid.large-card .md-proj-metric-label {
+            font-size: 10px; color: #b0a898;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            margin-top: 4px; text-align: right;
+        }
         /* Fade-in animation for detail panel content */
         @keyframes md-fadein {
             from { opacity: 0; transform: translateY(8px); }
@@ -2032,9 +2080,9 @@
         ];
 
         const STATIC_INTERNSHIPS = [
-            { company: '美团-大众点评笔记', role: 'Push用户运营实习生', startDate: '2025.12', endDate: '2026.03' },
-            { company: '碳益科技',          role: '产品实习生',         startDate: '2025.07', endDate: '2025.11' },
-            { company: '蔚来汽车',          role: '产品运营实习生',     startDate: '2025.02', endDate: '2025.06' },
+            { company: '美团-大众点评笔记', role: 'Push用户运营实习生', startDate: '2025.12', endDate: '2026.03', northStar: '唤起 DAU' },
+            { company: '碳益科技',          role: '产品实习生',         startDate: '2025.07', endDate: '2025.11', northStar: 'ESG 申报完成效率' },
+            { company: '蔚来汽车',          role: '产品运营实习生',     startDate: '2025.02', endDate: '2025.06', northStar: '合同合规率' },
         ];
 
         const STATIC_INTERNSHIP_PROJECTS = [
@@ -2403,39 +2451,67 @@
             const allEntries = [...internships, SOCIAL_ENTRY];
             let activeIndex  = 0;
 
+            // Build detail HTML for a given entry
+            function buildDetailHTML(intern) {
+                const projs    = intern.projects || [];
+                const isLarge  = projs.length <= 2;
+                const gridCls  = isLarge
+                    ? (projs.length === 1 ? 'md-proj-grid single-col large-card' : 'md-proj-grid large-card')
+                    : 'md-proj-grid';
+                const northStar = intern.northStar
+                    ? `<span class="md-north-star">★ ${intern.northStar}</span>`
+                    : '';
+
+                const projCards = projs.map(p => {
+                    if (isLarge) {
+                        // Horizontal layout: left = tag+name+desc, right = big metric
+                        return `
+                            <div class="md-proj-card">
+                                <div class="md-proj-card-left">
+                                    <div class="md-proj-tag">${p.tag || ''}</div>
+                                    <div class="md-proj-name">${p.name || p.title || ''}</div>
+                                    <div class="md-proj-desc">${p.desc || p.description || ''}</div>
+                                </div>
+                                <div class="md-proj-metric-wrap">
+                                    <div class="md-proj-metric-num">${p.metric || ''}</div>
+                                    <div class="md-proj-metric-label">result</div>
+                                </div>
+                            </div>`;
+                    } else {
+                        return `
+                            <div class="md-proj-card">
+                                <div class="md-proj-tag">${p.tag || ''}</div>
+                                <div class="md-proj-name">${p.name || p.title || ''}</div>
+                                <div class="md-proj-desc">${p.desc || p.description || ''}</div>
+                                <div class="md-proj-metric">${p.metric || ''}</div>
+                            </div>`;
+                    }
+                }).join('');
+
+                return `
+                    <div class="md-detail-header">
+                        <div class="md-detail-company">${intern.company}</div>
+                        <div class="md-detail-meta">
+                            <span>${intern.role}</span>
+                            <span style="color:#b0a898">${intern.period}</span>
+                            ${northStar}
+                        </div>
+                    </div>
+                    <div class="${gridCls}">
+                        ${projCards}
+                    </div>`;
+            }
+
             function showDetail(idx) {
                 activeIndex = idx;
-                // Update sidebar active state
                 sidebar.querySelectorAll('.md-company-card').forEach((c, i) =>
                     c.classList.toggle('active', i === idx)
                 );
-                // Fade out, swap content, fade in
                 detail.style.opacity    = '0';
                 detail.style.transform  = 'translateY(6px)';
                 detail.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
                 setTimeout(() => {
-                    const intern  = allEntries[idx];
-                    const projs   = intern.projects || [];
-                    const singleCol = projs.length <= 1 ? ' single-col' : '';
-                    detail.innerHTML = `
-                        <div class="md-detail-header">
-                            <div class="md-detail-company">${intern.company}</div>
-                            <div class="md-detail-meta">
-                                <span>${intern.role}</span>
-                                <span style="color:#b0a898">${intern.period}</span>
-                            </div>
-                        </div>
-                        <div class="md-proj-grid${singleCol}">
-                            ${projs.map(p => `
-                                <div class="md-proj-card">
-                                    <div class="md-proj-tag">${p.tag || ''}</div>
-                                    <div class="md-proj-name">${p.name || p.title || ''}</div>
-                                    <div class="md-proj-desc">${p.desc || p.description || ''}</div>
-                                    <div class="md-proj-metric">${p.metric || ''}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
+                    detail.innerHTML = buildDetailHTML(allEntries[idx]);
                     detail.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
                     detail.style.opacity    = '1';
                     detail.style.transform  = 'translateY(0)';
@@ -2457,28 +2533,7 @@
             });
 
             // Show first entry immediately (no fade on initial load)
-            const first = allEntries[0];
-            const projs0 = first.projects || [];
-            const sc0    = projs0.length <= 1 ? ' single-col' : '';
-            detail.innerHTML = `
-                <div class="md-detail-header">
-                    <div class="md-detail-company">${first.company}</div>
-                    <div class="md-detail-meta">
-                        <span>${first.role}</span>
-                        <span style="color:#b0a898">${first.period}</span>
-                    </div>
-                </div>
-                <div class="md-proj-grid${sc0}">
-                    ${projs0.map(p => `
-                        <div class="md-proj-card">
-                            <div class="md-proj-tag">${p.tag || ''}</div>
-                            <div class="md-proj-name">${p.name || p.title || ''}</div>
-                            <div class="md-proj-desc">${p.desc || p.description || ''}</div>
-                            <div class="md-proj-metric">${p.metric || ''}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            detail.innerHTML = buildDetailHTML(allEntries[0]);
         }
 
         loadInternships();
