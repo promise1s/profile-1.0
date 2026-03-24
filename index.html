@@ -596,40 +596,46 @@
             letter-spacing: 0.03em;
         }
         /* ── Large-card mode (≤2 projects) ── */
+        /* large-card: vertical layout, metric top-right, bigger fonts */
         .md-proj-grid.large-card .md-proj-card {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 24px;
+            flex-direction: column;
             padding: 22px 24px;
+            gap: 0;
         }
-        .md-proj-grid.large-card .md-proj-card-left {
-            flex: 1;
+        .md-proj-grid.large-card .md-proj-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .md-proj-grid.large-card .md-proj-card-top-left {
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            gap: 5px;
         }
         .md-proj-grid.large-card .md-proj-tag  { font-size: 11px; }
-        .md-proj-grid.large-card .md-proj-name { font-size: 18px; }
-        .md-proj-grid.large-card .md-proj-desc { font-size: 14px; line-height: 1.7; }
+        .md-proj-grid.large-card .md-proj-name { font-size: 18px; margin: 0; }
         .md-proj-grid.large-card .md-proj-metric-wrap {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            justify-content: flex-end;
-            min-width: 120px;
-            padding-left: 16px;
-            border-left: 1px solid #e8e0d4;
+            flex-shrink: 0;
+            margin-left: 20px;
         }
         .md-proj-grid.large-card .md-proj-metric-num {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; color: #003366;
+            font-size: 26px; color: #003366;
             letter-spacing: 0.04em; line-height: 1;
             text-align: right;
         }
         .md-proj-grid.large-card .md-proj-metric-label {
             font-size: 10px; color: #b0a898;
             letter-spacing: 0.08em; text-transform: uppercase;
-            margin-top: 4px; text-align: right;
+            margin-top: 3px; text-align: right;
+        }
+        .md-proj-grid.large-card .md-proj-desc {
+            font-size: 14px; line-height: 1.7;
+            color: #8a8070;
         }
         /* Fade-in animation for detail panel content */
         @keyframes md-fadein {
@@ -2464,18 +2470,20 @@
 
                 const projCards = projs.map(p => {
                     if (isLarge) {
-                        // Horizontal layout: left = tag+name+desc, right = big metric
+                        // Vertical layout: metric top-right, desc below
                         return `
                             <div class="md-proj-card">
-                                <div class="md-proj-card-left">
-                                    <div class="md-proj-tag">${p.tag || ''}</div>
-                                    <div class="md-proj-name">${p.name || p.title || ''}</div>
-                                    <div class="md-proj-desc">${p.desc || p.description || ''}</div>
+                                <div class="md-proj-card-top">
+                                    <div class="md-proj-card-top-left">
+                                        <div class="md-proj-tag">${p.tag || ''}</div>
+                                        <div class="md-proj-name">${p.name || p.title || ''}</div>
+                                    </div>
+                                    <div class="md-proj-metric-wrap">
+                                        <div class="md-proj-metric-num">${p.metric || ''}</div>
+                                        <div class="md-proj-metric-label">result</div>
+                                    </div>
                                 </div>
-                                <div class="md-proj-metric-wrap">
-                                    <div class="md-proj-metric-num">${p.metric || ''}</div>
-                                    <div class="md-proj-metric-label">result</div>
-                                </div>
+                                <div class="md-proj-desc">${p.desc || p.description || ''}</div>
                             </div>`;
                     } else {
                         return `
